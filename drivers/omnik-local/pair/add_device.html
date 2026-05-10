@@ -1,19 +1,39 @@
 <script type="application/javascript">
   Homey.setTitle(Homey.__("pair.omnik-local.add_device"));
 
+  // JSON.stringify(new Error(...)) returns "{}" because Error properties are
+  // non-enumerable. Pull message/code/stack out by name so we can see them in
+  // the driver log.
+  function describeError(error) {
+    if (!error) return "(no error)";
+    if (typeof error === "string") return error;
+    if (typeof error === "object") {
+      const parts = [];
+      if (error.name) parts.push(error.name);
+      if (error.message) parts.push(error.message);
+      if (error.code) parts.push("code=" + error.code);
+      if (error.statusCode) parts.push("status=" + error.statusCode);
+      if (parts.length === 0) {
+        try { return JSON.stringify(error, Object.getOwnPropertyNames(error)); }
+        catch (_) { return String(error); }
+      }
+      return parts.join(": ");
+    }
+    return String(error);
+  }
+
   Homey.emit("getDevice", null).then(function(device) {
-    Homey.createDevice(device)
+    return Homey.createDevice(device)
       .then(() => {
         Homey.done();
       })
       .catch(async (error) => {
         await Homey.showView("pair");
-
-        Homey.emit("error", JSON.stringify(error));
+        Homey.emit("error", "createDevice failed: " + describeError(error));
         Homey.emit("add_device_error", Homey.__("pair.omnik-local.error.adding_device"));
       });
   }).catch(async (error) => {
-    Homey.emit("error", JSON.stringify(error));
+    Homey.emit("error", "getDevice failed: " + describeError(error));
     Homey.emit("add_device_error", Homey.__("pair.omnik-local.error.adding_device"));
   });
 </script>

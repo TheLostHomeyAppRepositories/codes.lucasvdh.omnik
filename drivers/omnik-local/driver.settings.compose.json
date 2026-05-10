@@ -71,6 +71,147 @@
           "da": "minutter",
           "pl": "minuty"
         }
+      },
+      {
+        "id": "protocol",
+        "type": "dropdown",
+        "label": {
+          "en": "Protocol",
+          "nl": "Protocol",
+          "de": "Protokoll",
+          "fr": "Protocole",
+          "it": "Protocollo",
+          "sv": "Protokoll",
+          "no": "Protokoll",
+          "es": "Protocolo",
+          "da": "Protokol",
+          "pl": "Protokół"
+        },
+        "hint": {
+          "en": "TCP (binary protocol on port 8899) is preferred when supported — it provides AC voltage and inverter temperature in addition to power. HTTP reads /js/status.js and works on more inverters but exposes less data.",
+          "nl": "TCP (binair protocol op poort 8899) heeft de voorkeur als het wordt ondersteund — dat levert ook AC-spanning en omvormer-temperatuur. HTTP leest /js/status.js en werkt op meer omvormers maar geeft minder data.",
+          "de": "TCP (binäres Protokoll auf Port 8899) wird bevorzugt, wenn unterstützt — es liefert auch AC-Spannung und Wechselrichter-Temperatur. HTTP liest /js/status.js und funktioniert auf mehr Wechselrichtern, liefert aber weniger Daten.",
+          "fr": "TCP (protocole binaire sur le port 8899) est préféré lorsqu'il est pris en charge — il fournit également la tension AC et la température de l'onduleur. HTTP lit /js/status.js et fonctionne sur plus d'onduleurs mais expose moins de données.",
+          "it": "TCP (protocollo binario sulla porta 8899) è preferito quando supportato — fornisce anche tensione AC e temperatura inverter. HTTP legge /js/status.js e funziona su più inverter ma espone meno dati.",
+          "sv": "TCP (binärt protokoll på port 8899) föredras när det stöds — det ger även AC-spänning och växelriktarens temperatur. HTTP läser /js/status.js och fungerar på fler växelriktare men ger mindre data.",
+          "no": "TCP (binært protokoll på port 8899) foretrekkes når støttet — det gir også AC-spenning og inverter-temperatur. HTTP leser /js/status.js og fungerer på flere invertere men gir mindre data.",
+          "es": "TCP (protocolo binario en el puerto 8899) es preferido cuando es compatible — proporciona tensión AC y temperatura del inversor. HTTP lee /js/status.js y funciona en más inversores pero expone menos datos.",
+          "da": "TCP (binært protokol på port 8899) foretrækkes når understøttet — det giver også AC-spænding og inverter-temperatur. HTTP læser /js/status.js og fungerer på flere invertere men giver mindre data.",
+          "pl": "TCP (protokół binarny na porcie 8899) jest preferowany, gdy obsługiwany — dostarcza także napięcie AC i temperaturę inwertera. HTTP odczytuje /js/status.js i działa na większej liczbie inwerterów, ale udostępnia mniej danych."
+        },
+        "value": "tcp",
+        "values": [
+          {
+            "id": "tcp",
+            "label": {
+              "en": "TCP (binary, port 8899)",
+              "nl": "TCP (binair, poort 8899)",
+              "de": "TCP (binär, Port 8899)",
+              "fr": "TCP (binaire, port 8899)",
+              "it": "TCP (binario, porta 8899)",
+              "sv": "TCP (binär, port 8899)",
+              "no": "TCP (binær, port 8899)",
+              "es": "TCP (binario, puerto 8899)",
+              "da": "TCP (binær, port 8899)",
+              "pl": "TCP (binarny, port 8899)"
+            }
+          },
+          {
+            "id": "http",
+            "label": {
+              "en": "HTTP (/js/status.js)",
+              "nl": "HTTP (/js/status.js)",
+              "de": "HTTP (/js/status.js)",
+              "fr": "HTTP (/js/status.js)",
+              "it": "HTTP (/js/status.js)",
+              "sv": "HTTP (/js/status.js)",
+              "no": "HTTP (/js/status.js)",
+              "es": "HTTP (/js/status.js)",
+              "da": "HTTP (/js/status.js)",
+              "pl": "HTTP (/js/status.js)"
+            }
+          }
+        ]
+      },
+      {
+        "id": "wifi_sn",
+        "type": "text",
+        "label": {
+          "en": "WiFi stick S/N",
+          "nl": "WiFi-stick S/N",
+          "de": "WiFi-Stick-Seriennummer",
+          "fr": "Numéro de série de la clé WiFi",
+          "it": "S/N chiavetta WiFi",
+          "sv": "WiFi-stickans S/N",
+          "no": "WiFi-pinne S/N",
+          "es": "N/S de la memoria WiFi",
+          "da": "WiFi-pind S/N",
+          "pl": "Numer seryjny modułu WiFi"
+        },
+        "hint": {
+          "en": "Required for the TCP protocol. Auto-detected during pairing.",
+          "nl": "Vereist voor het TCP-protocol. Wordt automatisch gedetecteerd bij koppelen.",
+          "de": "Für das TCP-Protokoll erforderlich. Wird beim Koppeln automatisch erkannt.",
+          "fr": "Requis pour le protocole TCP. Détecté automatiquement lors de l'appairage.",
+          "it": "Richiesto per il protocollo TCP. Rilevato automaticamente durante l'accoppiamento.",
+          "sv": "Krävs för TCP-protokollet. Identifieras automatiskt vid parkoppling.",
+          "no": "Kreves for TCP-protokollet. Oppdages automatisk ved sammenkobling.",
+          "es": "Requerido para el protocolo TCP. Detectado automáticamente durante el emparejamiento.",
+          "da": "Påkrævet for TCP-protokollen. Registreres automatisk ved parring.",
+          "pl": "Wymagane dla protokołu TCP. Wykrywane automatycznie podczas parowania."
+        },
+        "value": ""
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "HTTP authentication (only used when protocol = HTTP)",
+      "nl": "HTTP-authenticatie (alleen gebruikt bij protocol = HTTP)",
+      "de": "HTTP-Authentifizierung (nur verwendet wenn Protokoll = HTTP)",
+      "fr": "Authentification HTTP (utilisée uniquement si protocole = HTTP)",
+      "it": "Autenticazione HTTP (usata solo se protocollo = HTTP)",
+      "sv": "HTTP-autentisering (används endast när protokoll = HTTP)",
+      "no": "HTTP-autentisering (brukes kun når protokoll = HTTP)",
+      "es": "Autenticación HTTP (solo se usa cuando protocolo = HTTP)",
+      "da": "HTTP-godkendelse (kun brugt når protokol = HTTP)",
+      "pl": "Uwierzytelnianie HTTP (używane tylko gdy protokół = HTTP)"
+    },
+    "children": [
+      {
+        "id": "http_user",
+        "type": "text",
+        "label": {
+          "en": "Username",
+          "nl": "Gebruikersnaam",
+          "de": "Benutzername",
+          "fr": "Nom d'utilisateur",
+          "it": "Nome utente",
+          "sv": "Användarnamn",
+          "no": "Brukernavn",
+          "es": "Usuario",
+          "da": "Brugernavn",
+          "pl": "Nazwa użytkownika"
+        },
+        "value": ""
+      },
+      {
+        "id": "http_password",
+        "type": "password",
+        "label": {
+          "en": "Password",
+          "nl": "Wachtwoord",
+          "de": "Passwort",
+          "fr": "Mot de passe",
+          "it": "Password",
+          "sv": "Lösenord",
+          "no": "Passord",
+          "es": "Contraseña",
+          "da": "Adgangskode",
+          "pl": "Hasło"
+        },
+        "value": ""
       }
     ]
   }

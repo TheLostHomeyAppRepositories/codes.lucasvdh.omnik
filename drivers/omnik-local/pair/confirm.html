@@ -1,0 +1,77 @@
+<base target="_parent"/>
+
+<div class="confirm-wrapper">
+    <table class="info-table">
+        <tbody id="info-rows"></tbody>
+    </table>
+
+    <div class="actions">
+        <button class="homey-button-primary-full" id="add-device" data-i18n="pair.omnik-local.confirm_add">Add device</button>
+    </div>
+</div>
+
+<script type="application/javascript">
+    Homey.setTitle(Homey.__("pair.omnik-local.confirm_title"));
+    Homey.setSubtitle(Homey.__("pair.omnik-local.confirm_subtitle"));
+
+    Homey.emit("getDiscovery").then(function (info) {
+        if (!info) return;
+        const rows = [
+            ["model", info.model],
+            ["serial", info.inverterName],
+            ["protocol", info.protocol === "tcp" ? "TCP (binary)" : "HTTP"],
+            ["current_power", info.currentPower + " W"],
+            ["today", (info.dailyProduction || 0).toFixed(2) + " kWh"],
+            ["total", (info.totalProduction || 0).toFixed(1) + " kWh"],
+        ];
+        const tbody = document.getElementById("info-rows");
+        for (const [key, value] of rows) {
+            if (value === undefined || value === null || value === "") continue;
+            const tr = document.createElement("tr");
+            const th = document.createElement("th");
+            th.setAttribute("data-i18n", "pair.omnik-local.confirm_field." + key);
+            th.innerText = key;
+            const td = document.createElement("td");
+            td.innerText = String(value);
+            tr.appendChild(th);
+            tr.appendChild(td);
+            tbody.appendChild(tr);
+        }
+        if (window.Homey && Homey.translate) Homey.translate(tbody);
+    });
+
+    document.getElementById("add-device").addEventListener("click", function () {
+        Homey.showView("add_device");
+    });
+</script>
+
+<style type="text/css">
+    .confirm-wrapper {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .info-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .info-table th, .info-table td {
+        padding: 0.4rem 0.5rem;
+        text-align: left;
+        border-bottom: 1px solid #e4e5e7;
+        font-weight: normal;
+    }
+
+    .info-table th {
+        color: #6c757d;
+        width: 40%;
+    }
+
+    .actions {
+        margin-top: auto;
+        padding-top: 1rem;
+    }
+</style>

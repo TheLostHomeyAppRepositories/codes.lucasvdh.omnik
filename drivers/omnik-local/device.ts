@@ -6,29 +6,79 @@ import OmnikLocalApi, {
   InverterData,
   ParseError,
   TimeoutError,
+  UnauthorizedError,
   UnexpectedResponseError,
 } from "./api";
-import { DeviceData, DeviceSettings, SettingsInput } from "./types";
+import { OmnikHttpApi, HttpAuth } from "./http-api";
+import { DeviceData, DeviceProtocol, DeviceSettings, SettingsInput } from "./types";
 
 const RETRY_DELAY_MS = 5000;
 const MAX_ATTEMPTS = 2;
 
 const MIGRATED_OPTIONS = ["meter_power", "meter_power.daily"];
 
+interface InverterClient {
+  getData(): Promise<InverterData>;
+}
+
 class OmnikLocal extends Inverter {
-  private api?: OmnikLocalApi;
+  private api?: InverterClient;
 
   async onInit(): Promise<void> {
     this.log("Device has been initialized");
 
     await this.migrateCapabilities();
+    await this.migrateSettings();
 
-    const settings: DeviceSettings = this.getSettings();
-    const data: DeviceData = this.getData();
-
-    this.api = new OmnikLocalApi({ address: settings.ip, wifiSn: data.id });
+    this.api = this.buildApi();
 
     return super.onInit();
+  }
+
+  /**
+   * Backfill settings introduced in v1.3 for devices paired with v1.1 or v1.2.
+   * These devices have the wifi-stick S/N in `data.id` but no `wifi_sn` /
+   * `protocol` setting yet. Without this, the settings UI would show empty
+   * fields and `buildApi()` would have to fall back to data.id.
+   */
+  private async migrateSettings(): Promise<void> {
+    const settings = this.getSettings() as Partial<DeviceSettings>;
+    const updates: Partial<DeviceSettings> = {};
+    if (!settings.protocol) updates.protocol = "tcp";
+    if (!settings.wifi_sn) updates.wifi_sn = String(this.getData().id);
+    if (Object.keys(updates).length === 0) return;
+    try {
+      await this.setSettings(updates);
+      this.log(`Backfilled settings: ${Object.keys(updates).join(", ")}`);
+    } catch (err) {
+      this.error("Failed to backfill v1.3 settings", err);
+    }
+  }
+
+  /**
+   * Build the API client. Accepts an optional `overrides` object so callers in
+   * `onSettings` can pass `newSettings` directly — at that point Homey has not
+   * yet persisted the new values, so `getSettings()` still returns the old
+   * ones. Using the explicit overrides makes a setting change take effect at
+   * the very next `checkProduction()` instead of after the next `onInit()`.
+   */
+  private buildApi(overrides: Partial<DeviceSettings> = {}): InverterClient {
+    const stored = this.getSettings() as Partial<DeviceSettings>;
+    const settings = { ...stored, ...overrides } as DeviceSettings;
+    const data: DeviceData = this.getData();
+    const protocol: DeviceProtocol = settings.protocol ?? "tcp";
+
+    if (protocol === "http") {
+      const auth = settings.http_user
+        ? { user: settings.http_user, password: settings.http_password ?? "" }
+        : undefined;
+      this.log(`Using HTTP protocol${auth ? " with auth" : ""}`);
+      return new OmnikHttpApi({ address: settings.ip, auth });
+    }
+
+    const wifiSn = settings.wifi_sn ? Number(settings.wifi_sn) : data.id;
+    this.log(`Using TCP protocol (sn=${wifiSn})`);
+    return new OmnikLocalApi({ address: settings.ip, wifiSn });
   }
 
   private async migrateCapabilities(): Promise<void> {
@@ -70,10 +120,15 @@ class OmnikLocal extends Inverter {
   }
 
   async onSettings({ newSettings, changedKeys }: SettingsInput) {
-    const data: DeviceData = this.getData();
-
-    if (changedKeys.includes("ip") && newSettings.ip) {
-      this.api = new OmnikLocalApi({ address: newSettings.ip, wifiSn: data.id });
+    // Any change in connection-related settings means we have to rebuild the
+    // client. `newSettings` is passed through to buildApi because the new
+    // values aren't necessarily persisted yet at this point.
+    const connectionKeys = ["ip", "protocol", "wifi_sn", "http_user", "http_password"];
+    if (changedKeys.some((k) => connectionKeys.includes(k))) {
+      this.api = this.buildApi(newSettings);
+      this.log(`Connection settings changed (${changedKeys.join(", ")}), rebuilt API client`);
+      // Trigger an immediate fetch so the user sees the effect of their change.
+      this.checkProduction();
     }
 
     if (changedKeys.includes("interval") && newSettings.interval) {
@@ -140,10 +195,18 @@ class OmnikLocal extends Inverter {
 
   private async applyInverterData(data: InverterData): Promise<void> {
     await this.safeSetCapabilityValue("measure_power", data.currentPower);
-    await this.safeSetCapabilityValue("measure_voltage", data.currentVoltage);
-    if (Number.isFinite(data.currentTemperature)) {
-      await this.safeSetCapabilityValue("measure_temperature", data.currentTemperature);
-    }
+
+    // Voltage and temperature are not available over HTTP, and TCP can return
+    // sentinel 0xFFFF when a sensor is unavailable. Write null in those cases
+    // so the UI shows "—" instead of leaving a stale reading on screen.
+    await this.safeSetCapabilityValue(
+      "measure_voltage",
+      Number.isFinite(data.currentVoltage) ? data.currentVoltage : null
+    );
+    await this.safeSetCapabilityValue(
+      "measure_temperature",
+      Number.isFinite(data.currentTemperature) ? data.currentTemperature : null
+    );
 
     if (Number.isFinite(data.dailyProduction)) {
       const previousDaily = this.getCapabilityValue("meter_power.daily") as number | null;
@@ -157,7 +220,8 @@ class OmnikLocal extends Inverter {
     }
 
     // meter_power tracks lifetime cumulative kWh (from protocol offset 71).
-    // Guard against transient zero readings so Insights/Energy don't see a regression.
+    // Never null this out — Insights treats null as a regression that breaks
+    // monthly aggregations. Skip writes when we can't trust the reading.
     if (Number.isFinite(data.totalProduction)) {
       const previousTotal = this.getCapabilityValue("meter_power") as number | null;
       if (data.totalProduction > 0 || previousTotal == null) {
@@ -185,6 +249,7 @@ class OmnikLocal extends Inverter {
   private describe(error: unknown): string {
     if (error instanceof TimeoutError) return "timeout";
     if (error instanceof HostUnreachableError) return error.message;
+    if (error instanceof UnauthorizedError) return error.message;
     if (error instanceof UnexpectedResponseError) return error.message;
     if (error instanceof ParseError) return error.message;
     if (error instanceof Error) return error.message;

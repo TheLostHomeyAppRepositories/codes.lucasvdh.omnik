@@ -12,6 +12,12 @@ export class HostUnreachableError extends Error {
   }
 }
 
+export class UnauthorizedError extends Error {
+  constructor() {
+    super("Inverter web interface requires authentication");
+  }
+}
+
 export class UnexpectedResponseError extends Error {
   constructor(response: string) {
     super("Unexpected response from inverter: " + response);

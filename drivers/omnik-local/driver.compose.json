@@ -9,12 +9,21 @@
     {
       "id": "pair",
       "navigation": {
-        "next": "validate"
+        "next": "probing"
       }
     },
     {
-      "id": "validate",
+      "id": "probing",
       "template": "loading"
+    },
+    {
+      "id": "auth_required"
+    },
+    {
+      "id": "manual_entry"
+    },
+    {
+      "id": "confirm"
     },
     {
       "id": "add_device"

@@ -5,17 +5,37 @@
   "pair": {
     "omnik-local": {
       "title": "Inwerter Omnik",
-      "subtitle": "Wprowadź adres IP i numer WiFi S/N swojego inwertera Omnik.",
+      "subtitle": "Wprowadź adres IP swojego inwertera Omnik.",
       "ip_address": "Adres IP",
-      "wifi_sn": "Numer WiFi S/N",
-      "unverified_sn_message": "Nieznany prefiks numeru seryjnego. Ta aplikacja została potwierdzona jako działająca dla numerów seryjnych zaczynających się od 160, 161, 604 lub 646. Inne modele mogą działać — spróbujemy mimo to.",
+      "ip_hint": "Wprowadź adres IP modułu WiFi swojego inwertera Omnik. Aplikacja wykryje resztę automatycznie.",
+      "auth_title": "Wymagane uwierzytelnienie",
+      "auth_explainer": "Interfejs internetowy inwertera wymaga uwierzytelnienia. Domyślne dane logowania to zwykle admin / admin, chyba że instalator je zmienił.",
+      "auth_user": "Nazwa użytkownika",
+      "auth_password": "Hasło",
+      "auth_submit": "Kontynuuj",
+      "manual_title": "Wprowadź numer seryjny ręcznie",
+      "manual_explainer": "Nie udało się automatycznie wykryć numeru seryjnego inwertera. Wprowadź numer seryjny modułu WiFi ręcznie. Jest wydrukowany na naklejce na samym module WiFi (10 cyfr, zwykle zaczynający się od 160, 161, 604 lub 646).",
+      "manual_sn_label": "Numer seryjny modułu WiFi",
+      "manual_submit": "Spróbuj ponownie",
+      "confirm_title": "Znaleziono inwerter",
+      "confirm_subtitle": "Poniższe wartości właśnie zostały odczytane z twojego inwertera. Kliknij Dodaj urządzenie, aby kontynuować.",
+      "confirm_add": "Dodaj urządzenie",
+      "confirm_field": {
+        "model": "Model",
+        "serial": "Numer seryjny",
+        "protocol": "Protokół",
+        "current_power": "Aktualna moc",
+        "today": "Dziś",
+        "total": "Razem"
+      },
       "add_device": "Dodawanie urządzenia",
       "error": {
         "missing_ip_address": "Podaj adres IP",
-        "missing_wifi_sn": "Podaj numer WiFi S/N",
+        "missing_wifi_sn": "Podaj numeryczny numer WiFi S/N",
         "host_unreachable": "Nie można połączyć się z inwerterem Omnik pod tym adresem IP. Upewnij się, że adres IP jest poprawny i inwerter jest włączony.",
-        "connection_timed_out": "Podczas próby połączenia z inwerterem Omnik wystąpił limit czasu. Upewnij się, że numer WiFi S/N jest poprawny.",
-        "unexpected_response": "Otrzymano nieoczekiwana odpowiedź od inwertera Omnik. Aplikacja jest potwierdzona jako działająca dla numerów seryjnych zaczynających się od 160, 161, 604 lub 646; podziel się swoim modelem na GitHub, jeśli jest inny.",
+        "connection_timed_out": "Podczas próby połączenia z inwerterem Omnik wystąpił limit czasu.",
+        "unexpected_response": "Otrzymano nieoczekiwana odpowiedź od inwertera Omnik. Aplikacja obsługuje starszy protokół 0x68 na TCP/8899 oraz fallback HTTP /js/status.js. Podziel się swoim modelem na GitHub, jeśli żaden nie działa.",
+        "auth_failed": "Uwierzytelnianie nie powiodło się. Sprawdź nazwę użytkownika i hasło.",
         "adding_device": "Coś poszło nie tak podczas dodawania urządzenia.\n\nMoże to oznaczać, że inwerter został już dodany jako urządzenie."
       }
     },

@@ -5,17 +5,37 @@
   "pair": {
     "omnik-local": {
       "title": "Omnik omvormer",
-      "subtitle": "Voer het IP-adres en WiFi S/N van uw Omnik omvormer in.",
+      "subtitle": "Voer het IP-adres van uw Omnik omvormer in.",
       "ip_address": "IP-adres",
-      "wifi_sn": "WiFi S/N",
-      "unverified_sn_message": "Onbekend serienummer-prefix. Deze app is bevestigd werkend voor serienummers die beginnen met 160, 161, 604 of 646. Andere modellen kunnen werken — we proberen het gewoon.",
+      "ip_hint": "Voer het IP-adres van de WiFi-stick van je Omnik omvormer in. De app detecteert de rest automatisch.",
+      "auth_title": "Authenticatie vereist",
+      "auth_explainer": "De webinterface van de omvormer vereist authenticatie. Standaardgegevens zijn meestal admin / admin, tenzij je installateur deze heeft gewijzigd.",
+      "auth_user": "Gebruikersnaam",
+      "auth_password": "Wachtwoord",
+      "auth_submit": "Doorgaan",
+      "manual_title": "Serienummer handmatig invoeren",
+      "manual_explainer": "Het serienummer van je omvormer kon niet automatisch worden gedetecteerd. Voer het serienummer van de WiFi-stick handmatig in. Het staat op een sticker op de WiFi-stick zelf (10 cijfers, meestal beginnend met 160, 161, 604 of 646).",
+      "manual_sn_label": "WiFi-stick S/N",
+      "manual_submit": "Opnieuw proberen",
+      "confirm_title": "Omvormer gevonden",
+      "confirm_subtitle": "De onderstaande waarden zijn zojuist uit je omvormer gelezen. Klik op Apparaat toevoegen om door te gaan.",
+      "confirm_add": "Apparaat toevoegen",
+      "confirm_field": {
+        "model": "Model",
+        "serial": "Serienummer",
+        "protocol": "Protocol",
+        "current_power": "Huidig vermogen",
+        "today": "Vandaag",
+        "total": "Totaal"
+      },
       "add_device": "Apparaat toevoegen",
       "error": {
         "missing_ip_address": "Geef een IP-adres op",
-        "missing_wifi_sn": "Geef een WiFi S/N op",
+        "missing_wifi_sn": "Geef een numeriek WiFi S/N op",
         "host_unreachable": "Kon geen verbinding maken met de Omnik omvormer op dit IP-adres. Controleer of het IP-adres correct is en de omvormer is ingeschakeld.",
-        "connection_timed_out": "Er is een time-out opgetreden bij het verbinden met uw Omnik omvormer. Controleer of het WiFi S/N correct is.",
-        "unexpected_response": "Onverwachte reactie ontvangen van uw Omnik omvormer. De app is bevestigd werkend voor serienummers die beginnen met 160, 161, 604 of 646; deel je model gerust op GitHub als het een ander type is.",
+        "connection_timed_out": "Er is een time-out opgetreden bij het verbinden met uw Omnik omvormer.",
+        "unexpected_response": "Onverwachte reactie ontvangen van uw Omnik omvormer. De app ondersteunt het legacy 0x68-protocol op TCP/8899 en de /js/status.js HTTP-fallback. Deel je model op GitHub als geen van beide werkt.",
+        "auth_failed": "Authenticatie mislukt. Controleer de gebruikersnaam en het wachtwoord.",
         "adding_device": "Er is iets misgegaan bij het toevoegen van het apparaat.\n\nHet kan zijn dat de omvormer al als apparaat is toegevoegd."
       }
     },

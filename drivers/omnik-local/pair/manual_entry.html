@@ -1,0 +1,69 @@
+<base target="_parent"/>
+
+<div class="form-wrapper">
+    <p class="alert info" data-i18n="pair.omnik-local.manual_explainer">
+        We could not auto-detect your inverter's serial number. Please enter the WiFi stick's serial number manually. It is printed on a sticker on the WiFi stick itself (10 digits, usually starting with 160, 161, 604 or 646).
+    </p>
+
+    <form class="homey-form">
+        <fieldset class="homey-form-fieldset">
+            <div class="homey-form-group">
+                <label class="homey-form-label" for="manual_sn" data-i18n="pair.omnik-local.manual_sn_label">WiFi stick S/N</label>
+                <input class="homey-form-input"
+                       id="manual_sn"
+                       type="text"
+                       inputmode="numeric"
+                       pattern="[0-9]+"
+                       placeholder="1600000000"
+                       value=""/>
+            </div>
+        </fieldset>
+    </form>
+
+    <div class="actions">
+        <button class="homey-button-primary-full" id="submit-sn" data-i18n="pair.omnik-local.manual_submit">Try again</button>
+    </div>
+</div>
+
+<script type="application/javascript">
+    Homey.setTitle(Homey.__("pair.omnik-local.manual_title"));
+
+    Homey.on("alert", function (message) {
+        Homey.alert(message);
+    });
+
+    document.getElementById("submit-sn").addEventListener("click", function () {
+        const sn = document.getElementById("manual_sn").value;
+        if (!sn || !/^[0-9]+$/.test(sn)) {
+            Homey.alert(Homey.__("pair.omnik-local.error.missing_wifi_sn"));
+            return;
+        }
+        Homey.emit("submitManualSn", Number(sn));
+    });
+</script>
+
+<style type="text/css">
+    .form-wrapper {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .alert {
+        padding: 0.75rem 1rem;
+        border-radius: 0.25rem;
+        font-size: 0.875rem;
+    }
+
+    .info {
+        color: #004085;
+        background-color: #cce5ff;
+        border-color: #b8daff;
+    }
+
+    .actions {
+        margin-top: auto;
+        padding-top: 1rem;
+    }
+</style>

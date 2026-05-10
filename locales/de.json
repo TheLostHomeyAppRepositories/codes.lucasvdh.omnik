@@ -5,17 +5,37 @@
   "pair": {
     "omnik-local": {
       "title": "Omnik-Wechselrichter",
-      "subtitle": "Geben Sie die IP-Adresse und die WiFi-Seriennummer Ihres Omnik-Wechselrichters ein.",
+      "subtitle": "Geben Sie die IP-Adresse Ihres Omnik-Wechselrichters ein.",
       "ip_address": "IP-Adresse",
-      "wifi_sn": "WiFi-Seriennummer",
-      "unverified_sn_message": "Unbekanntes Seriennummern-Präfix. Diese App wurde für Seriennummern, die mit 160, 161, 604 oder 646 beginnen, als funktionierend bestätigt. Andere Modelle können trotzdem funktionieren — wir versuchen es einfach.",
+      "ip_hint": "Geben Sie die IP-Adresse des WiFi-Sticks Ihres Omnik-Wechselrichters ein. Die App erkennt den Rest automatisch.",
+      "auth_title": "Authentifizierung erforderlich",
+      "auth_explainer": "Die Weboberfläche des Wechselrichters erfordert eine Authentifizierung. Die Standard-Anmeldedaten sind in der Regel admin / admin, sofern Ihr Installateur sie nicht geändert hat.",
+      "auth_user": "Benutzername",
+      "auth_password": "Passwort",
+      "auth_submit": "Weiter",
+      "manual_title": "Seriennummer manuell eingeben",
+      "manual_explainer": "Die Seriennummer Ihres Wechselrichters konnte nicht automatisch erkannt werden. Bitte geben Sie die Seriennummer des WiFi-Sticks manuell ein. Sie steht auf einem Aufkleber am WiFi-Stick selbst (10 Ziffern, normalerweise beginnend mit 160, 161, 604 oder 646).",
+      "manual_sn_label": "WiFi-Stick-Seriennummer",
+      "manual_submit": "Erneut versuchen",
+      "confirm_title": "Wechselrichter gefunden",
+      "confirm_subtitle": "Die untenstehenden Werte wurden gerade von Ihrem Wechselrichter gelesen. Klicken Sie auf Gerät hinzufügen, um fortzufahren.",
+      "confirm_add": "Gerät hinzufügen",
+      "confirm_field": {
+        "model": "Modell",
+        "serial": "Seriennummer",
+        "protocol": "Protokoll",
+        "current_power": "Aktuelle Leistung",
+        "today": "Heute",
+        "total": "Gesamt"
+      },
       "add_device": "Gerät wird hinzugefügt",
       "error": {
         "missing_ip_address": "Geben Sie eine IP-Adresse an",
-        "missing_wifi_sn": "Geben Sie eine WiFi-Seriennummer an",
+        "missing_wifi_sn": "Geben Sie eine numerische WiFi-Seriennummer an",
         "host_unreachable": "Konnte den Omnik-Wechselrichter unter dieser IP-Adresse nicht erreichen. Stellen Sie sicher, dass die IP-Adresse korrekt und der Wechselrichter eingeschaltet ist.",
-        "connection_timed_out": "Es ist ein Timeout beim Verbinden mit Ihrem Omnik-Wechselrichter aufgetreten. Stellen Sie sicher, dass die WiFi-Seriennummer korrekt ist.",
-        "unexpected_response": "Eine unerwartete Antwort wurde von Ihrem Omnik-Wechselrichter empfangen. Die App wurde für Seriennummern bestätigt, die mit 160, 161, 604 oder 646 beginnen; teilen Sie Ihr Modell bitte auf GitHub, wenn es ein anderes ist.",
+        "connection_timed_out": "Es ist ein Timeout beim Verbinden mit Ihrem Omnik-Wechselrichter aufgetreten.",
+        "unexpected_response": "Unerwartete Antwort vom Omnik-Wechselrichter erhalten. Die App unterstützt das Legacy-0x68-Protokoll auf TCP/8899 und den /js/status.js-HTTP-Fallback. Bitte teilen Sie Ihr Modell auf GitHub, wenn keines davon funktioniert.",
+        "auth_failed": "Authentifizierung fehlgeschlagen. Bitte überprüfen Sie Benutzername und Passwort.",
         "adding_device": "Beim Hinzufügen des Geräts ist ein Fehler aufgetreten.\n\nEs könnte sein, dass der Wechselrichter bereits als Gerät hinzugefügt wurde."
       }
     },

@@ -34,5 +34,17 @@
     "es": "Correcciones de estabilidad, nuevas tarjetas de flujo y medición acumulada de kWh.",
     "da": "Stabilitetsrettelser, nye flow-kort og kumulativ kWh-måling.",
     "pl": "Poprawki stabilności, nowe karty flow i kumulatywny pomiar kWh."
+  },
+  "1.3.0": {
+    "en": "Auto-detect serial number during pairing and support for more Omnik models.",
+    "nl": "Automatische serienummer-detectie bij koppelen en ondersteuning voor meer Omnik-modellen.",
+    "de": "Automatische Seriennummern-Erkennung beim Koppeln und Unterstützung für mehr Omnik-Modelle.",
+    "fr": "Détection automatique du numéro de série lors de l'appairage et prise en charge de plus de modèles Omnik.",
+    "it": "Rilevamento automatico del numero di serie durante l'accoppiamento e supporto per più modelli Omnik.",
+    "sv": "Automatisk identifiering av serienummer vid parkoppling och stöd för fler Omnik-modeller.",
+    "no": "Automatisk serienummer-oppdagelse ved sammenkobling og støtte for flere Omnik-modeller.",
+    "es": "Detección automática del número de serie durante el emparejamiento y compatibilidad con más modelos Omnik.",
+    "da": "Automatisk registrering af serienummer ved parring og understøttelse af flere Omnik-modeller.",
+    "pl": "Automatyczne wykrywanie numeru seryjnego podczas parowania i obsługa większej liczby modeli Omnik."
   }
 }

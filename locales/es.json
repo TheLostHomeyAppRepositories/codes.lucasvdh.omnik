@@ -5,17 +5,37 @@
   "pair": {
     "omnik-local": {
       "title": "Inversor Omnik",
-      "subtitle": "Ingrese la dirección IP y el número de serie WiFi de su inversor Omnik.",
+      "subtitle": "Ingrese la dirección IP de su inversor Omnik.",
       "ip_address": "Dirección IP",
-      "wifi_sn": "Número de serie WiFi",
-      "unverified_sn_message": "Prefijo de número de serie desconocido. Se ha confirmado que esta aplicación funciona con números de serie que comienzan con 160, 161, 604 o 646. Otros modelos pueden funcionar — lo intentaremos de todos modos.",
+      "ip_hint": "Ingrese la dirección IP del adaptador WiFi de su inversor Omnik. La aplicación detectará el resto automáticamente.",
+      "auth_title": "Autenticación requerida",
+      "auth_explainer": "La interfaz web del inversor requiere autenticación. Las credenciales predeterminadas suelen ser admin / admin, a menos que su instalador las haya cambiado.",
+      "auth_user": "Usuario",
+      "auth_password": "Contraseña",
+      "auth_submit": "Continuar",
+      "manual_title": "Introducir número de serie manualmente",
+      "manual_explainer": "No pudimos detectar automáticamente el número de serie de su inversor. Introduzca manualmente el número de serie de la memoria WiFi. Está impreso en una etiqueta en la propia memoria WiFi (10 dígitos, generalmente comenzando con 160, 161, 604 o 646).",
+      "manual_sn_label": "N/S de la memoria WiFi",
+      "manual_submit": "Reintentar",
+      "confirm_title": "Inversor encontrado",
+      "confirm_subtitle": "Los valores a continuación se acaban de leer de su inversor. Haga clic en Agregar dispositivo para continuar.",
+      "confirm_add": "Agregar dispositivo",
+      "confirm_field": {
+        "model": "Modelo",
+        "serial": "Número de serie",
+        "protocol": "Protocolo",
+        "current_power": "Potencia actual",
+        "today": "Hoy",
+        "total": "Total"
+      },
       "add_device": "Agregando dispositivo",
       "error": {
         "missing_ip_address": "Proporcione una dirección IP",
-        "missing_wifi_sn": "Proporcione un número de serie WiFi",
+        "missing_wifi_sn": "Proporcione un N/S WiFi numérico",
         "host_unreachable": "No se pudo comunicar con el inversor Omnik en esta dirección IP. Asegúrese de que la dirección IP sea correcta y el inversor esté encendido.",
-        "connection_timed_out": "Se produjo un tiempo de espera al conectar con su inversor Omnik. Asegúrese de que el número de serie WiFi sea correcto.",
-        "unexpected_response": "Respuesta inesperada de su inversor Omnik. La aplicación se ha confirmado funcionando para números de serie que comienzan con 160, 161, 604 o 646; comparta su modelo en GitHub si es diferente.",
+        "connection_timed_out": "Se produjo un tiempo de espera al conectar con su inversor Omnik.",
+        "unexpected_response": "Respuesta inesperada de su inversor Omnik. La aplicación admite el protocolo heredado 0x68 en TCP/8899 y la alternativa HTTP /js/status.js. Comparta su modelo en GitHub si ninguno funciona.",
+        "auth_failed": "Falló la autenticación. Verifique el nombre de usuario y la contraseña.",
         "adding_device": "Algo salió mal al agregar el dispositivo.\n\nPodría ser que el inversor ya se haya agregado como dispositivo."
       }
     },
