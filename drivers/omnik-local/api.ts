@@ -34,6 +34,7 @@ export interface InverterData {
   inverterName: string;
   currentPower: number;
   currentVoltage: number;
+  currentFrequency: number;
   dailyProduction: number;
   totalProduction: number;
   currentTemperature: number;
@@ -82,6 +83,7 @@ export class OmnikProtocol {
    *   15..30  ASCII inverter name (16 bytes)
    *   31      inverter temperature (Int16BE, /10 °C)
    *   51..56  AC voltages L1/L2/L3 (Int16BE, /10 V) — averaged across positive phases
+   *   57      AC frequency (UInt16BE, /100 Hz)
    *   59..68  AC powers L1/L2/L3 (Int16BE, W) — summed (positive phases only)
    *   69      E-Today (UInt16BE, /100 kWh)
    *   71      E-Total (UInt32BE, /10 kWh, lifetime cumulative)
@@ -108,9 +110,11 @@ export class OmnikProtocol {
     // Sensors that are unset/unsupported send 0xFFFF (UInt16) or 0xFFFFFFFF (UInt32).
     // Clamp those to NaN so the device layer can ignore them instead of writing
     // 655.35 kWh or 429496729.5 kWh into the meter.
+    const rawFreq = data.readUInt16BE(57);
     const rawDaily = data.readUInt16BE(69);
     const rawTotal = data.readUInt32BE(71);
     const rawTemp = data.readInt16BE(31);
+    const currentFrequency = rawFreq === 0xffff ? NaN : rawFreq / 100;
     const dailyProduction = rawDaily === 0xffff ? NaN : rawDaily / 100;
     const totalProduction = rawTotal === 0xffffffff ? NaN : rawTotal / 10;
     const currentTemperature = rawTemp === -1 ? NaN : rawTemp / 10;
@@ -119,6 +123,7 @@ export class OmnikProtocol {
       inverterName,
       currentPower,
       currentVoltage,
+      currentFrequency,
       dailyProduction,
       totalProduction,
       currentTemperature,

@@ -1,0 +1,45 @@
+{
+  "highlight": true,
+  "title": {
+    "en": "Production started",
+    "nl": "Productie gestart",
+    "de": "Produktion gestartet",
+    "fr": "Production démarrée",
+    "it": "Produzione avviata",
+    "sv": "Produktion startade",
+    "no": "Produksjon startet",
+    "es": "Producción iniciada",
+    "da": "Produktion startet",
+    "pl": "Produkcja rozpoczęta"
+  },
+  "hint": {
+    "en": "Fires when the inverter transitions from idle to generating power.",
+    "nl": "Wordt uitgevoerd wanneer de omvormer van inactief naar opwekken overgaat.",
+    "de": "Wird ausgelöst, wenn der Wechselrichter vom Ruhezustand auf Stromerzeugung umschaltet.",
+    "fr": "Se déclenche lorsque l'onduleur passe de l'état inactif à la production d'énergie.",
+    "it": "Si attiva quando l'inverter passa da inattivo a generazione di energia.",
+    "sv": "Aktiveras när växelriktaren går från inaktiv till energiproduktion.",
+    "no": "Utløses når inverteren går fra inaktiv til energiproduksjon.",
+    "es": "Se dispara cuando el inversor pasa de inactivo a generar energía.",
+    "da": "Udløses, når inverteren går fra inaktiv til energiproduktion.",
+    "pl": "Uruchamia się, gdy inwerter przechodzi z bezczynności do generowania mocy."
+  },
+  "tokens": [
+    {
+      "name": "power",
+      "type": "number",
+      "title": {
+        "en": "Power (W)",
+        "nl": "Vermogen (W)"
+      },
+      "example": 250
+    }
+  ],
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=omnik-local"
+    }
+  ]
+}

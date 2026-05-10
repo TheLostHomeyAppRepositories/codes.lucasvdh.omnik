@@ -117,6 +117,7 @@ export class OmnikHttpApi {
       inverterName: (webData[0] ?? "").trim(),
       currentPower: Number.isFinite(currentPower) ? currentPower : 0,
       currentVoltage: NaN,
+      currentFrequency: NaN,
       dailyProduction: Number.isFinite(todayRaw) ? todayRaw / 100 : NaN,
       totalProduction: Number.isFinite(totalRaw) ? totalRaw / 10 : NaN,
       currentTemperature: NaN,

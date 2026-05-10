@@ -1,8 +1,8 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "codes.lucasvdh.omnik",
-  "version": "1.3.0",
-  "compatibility": ">=5.0.0",
+  "version": "1.4.0",
+  "compatibility": ">=12.2.0",
   "sdk": 3,
   "brandColor": "#eda328",
   "name": {
@@ -101,6 +101,87 @@
           }
         ],
         "id": "daily_production_changed"
+      },
+      {
+        "highlight": true,
+        "title": {
+          "en": "Production started",
+          "nl": "Productie gestart",
+          "de": "Produktion gestartet",
+          "fr": "Production démarrée",
+          "it": "Produzione avviata",
+          "sv": "Produktion startade",
+          "no": "Produksjon startet",
+          "es": "Producción iniciada",
+          "da": "Produktion startet",
+          "pl": "Produkcja rozpoczęta"
+        },
+        "hint": {
+          "en": "Fires when the inverter transitions from idle to generating power.",
+          "nl": "Wordt uitgevoerd wanneer de omvormer van inactief naar opwekken overgaat.",
+          "de": "Wird ausgelöst, wenn der Wechselrichter vom Ruhezustand auf Stromerzeugung umschaltet.",
+          "fr": "Se déclenche lorsque l'onduleur passe de l'état inactif à la production d'énergie.",
+          "it": "Si attiva quando l'inverter passa da inattivo a generazione di energia.",
+          "sv": "Aktiveras när växelriktaren går från inaktiv till energiproduktion.",
+          "no": "Utløses når inverteren går fra inaktiv til energiproduksjon.",
+          "es": "Se dispara cuando el inversor pasa de inactivo a generar energía.",
+          "da": "Udløses, når inverteren går fra inaktiv til energiproduktion.",
+          "pl": "Uruchamia się, gdy inwerter przechodzi z bezczynności do generowania mocy."
+        },
+        "tokens": [
+          {
+            "name": "power",
+            "type": "number",
+            "title": {
+              "en": "Power (W)",
+              "nl": "Vermogen (W)"
+            },
+            "example": 250
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=omnik-local"
+          }
+        ],
+        "id": "production_started"
+      },
+      {
+        "highlight": true,
+        "title": {
+          "en": "Production stopped",
+          "nl": "Productie gestopt",
+          "de": "Produktion gestoppt",
+          "fr": "Production arrêtée",
+          "it": "Produzione interrotta",
+          "sv": "Produktion stoppade",
+          "no": "Produksjon stoppet",
+          "es": "Producción detenida",
+          "da": "Produktion stoppet",
+          "pl": "Produkcja zatrzymana"
+        },
+        "hint": {
+          "en": "Fires when the inverter transitions from generating power to idle (e.g. at sunset or when a panel is shaded).",
+          "nl": "Wordt uitgevoerd wanneer de omvormer van opwekken naar inactief overgaat (bijvoorbeeld bij zonsondergang of wanneer een paneel beschaduwd is).",
+          "de": "Wird ausgelöst, wenn der Wechselrichter von Stromerzeugung auf Ruhezustand umschaltet (z. B. bei Sonnenuntergang oder bei Verschattung).",
+          "fr": "Se déclenche lorsque l'onduleur passe de la production d'énergie à l'inactivité (par exemple au coucher du soleil ou lorsqu'un panneau est ombragé).",
+          "it": "Si attiva quando l'inverter passa dalla generazione di energia all'inattività (ad esempio al tramonto o quando un pannello è in ombra).",
+          "sv": "Aktiveras när växelriktaren går från energiproduktion till inaktiv (t.ex. vid solnedgång eller när en panel är skuggad).",
+          "no": "Utløses når inverteren går fra energiproduksjon til inaktiv (f.eks. ved solnedgang eller når et panel er skygget).",
+          "es": "Se dispara cuando el inversor pasa de generar energía a inactivo (por ejemplo al atardecer o cuando un panel está sombreado).",
+          "da": "Udløses, når inverteren går fra energiproduktion til inaktiv (f.eks. ved solnedgang eller når et panel er skygget).",
+          "pl": "Uruchamia się, gdy inwerter przechodzi z generowania mocy do bezczynności (np. o zachodzie słońca lub gdy panel jest zacieniony)."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=omnik-local"
+          }
+        ],
+        "id": "production_stopped"
       }
     ],
     "conditions": [
@@ -264,6 +345,7 @@
         "meter_power",
         "meter_power.daily",
         "measure_voltage",
+        "measure_frequency",
         "measure_temperature"
       ],
       "capabilitiesOptions": {

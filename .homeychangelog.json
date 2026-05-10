@@ -46,5 +46,17 @@
     "es": "Detección automática del número de serie durante el emparejamiento y compatibilidad con más modelos Omnik.",
     "da": "Automatisk registrering af serienummer ved parring og understøttelse af flere Omnik-modeller.",
     "pl": "Automatyczne wykrywanie numeru seryjnego podczas parowania i obsługa większej liczby modeli Omnik."
+  },
+  "1.4.0": {
+    "en": "New flow triggers for when production starts or stops, plus grid frequency monitoring.",
+    "nl": "Nieuwe flow-triggers voor wanneer productie start of stopt, plus monitoring van netfrequentie.",
+    "de": "Neue Flow-Trigger für Produktionsstart und -stopp, sowie Netzfrequenz-Überwachung.",
+    "fr": "Nouveaux déclencheurs de flux pour le démarrage et l'arrêt de la production, et surveillance de la fréquence du réseau.",
+    "it": "Nuovi trigger di flusso per inizio e fine della produzione, oltre al monitoraggio della frequenza di rete.",
+    "sv": "Nya flow-utlösare för när produktion startar eller stoppar, plus övervakning av nätfrekvens.",
+    "no": "Nye flow-utløsere for når produksjon starter eller stopper, pluss overvåking av nettfrekvens.",
+    "es": "Nuevos disparadores de flujo para cuando la producción inicia o se detiene, más monitoreo de frecuencia de red.",
+    "da": "Nye flow-udløsere for når produktion starter eller stopper, plus overvågning af netfrekvens.",
+    "pl": "Nowe wyzwalacze flow dla rozpoczęcia i zatrzymania produkcji, plus monitorowanie częstotliwości sieci."
   }
 }

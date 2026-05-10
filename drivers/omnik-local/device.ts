@@ -23,6 +23,7 @@ interface InverterClient {
 
 class OmnikLocal extends Inverter {
   private api?: InverterClient;
+  private previousPower?: number;
 
   async onInit(): Promise<void> {
     this.log("Device has been initialized");
@@ -90,6 +91,10 @@ class OmnikLocal extends Inverter {
       this.log("Adding capability meter_power.daily");
       await this.addCapability("meter_power.daily");
     }
+    if (!this.hasCapability("measure_frequency")) {
+      this.log("Adding capability measure_frequency");
+      await this.addCapability("measure_frequency");
+    }
 
     // capabilitiesOptions in driver.compose.json only apply to fresh pairings.
     // For upgrades we have to re-push them so v1.2 titles take effect on
@@ -150,7 +155,7 @@ class OmnikLocal extends Inverter {
       try {
         const data = await this.api.getData();
         this.log(
-          `Inverter response: ${data.currentPower}W, ${data.currentVoltage}V, today=${data.dailyProduction}kWh, total=${data.totalProduction}kWh, ${data.currentTemperature}°C`
+          `Inverter response: ${data.currentPower}W, ${data.currentVoltage}V, ${data.currentFrequency}Hz, today=${data.dailyProduction}kWh, total=${data.totalProduction}kWh, ${data.currentTemperature}°C`
         );
         await this.applyInverterData(data);
         await this.markAvailable();
@@ -195,13 +200,19 @@ class OmnikLocal extends Inverter {
 
   private async applyInverterData(data: InverterData): Promise<void> {
     await this.safeSetCapabilityValue("measure_power", data.currentPower);
+    this.fireProductionTransitionTriggers(data.currentPower);
 
-    // Voltage and temperature are not available over HTTP, and TCP can return
-    // sentinel 0xFFFF when a sensor is unavailable. Write null in those cases
-    // so the UI shows "—" instead of leaving a stale reading on screen.
+    // Voltage, frequency and temperature are not available over HTTP, and TCP
+    // can return sentinel 0xFFFF when a sensor is unavailable. Write null in
+    // those cases so the UI shows "—" instead of leaving a stale reading on
+    // screen.
     await this.safeSetCapabilityValue(
       "measure_voltage",
       Number.isFinite(data.currentVoltage) ? data.currentVoltage : null
+    );
+    await this.safeSetCapabilityValue(
+      "measure_frequency",
+      Number.isFinite(data.currentFrequency) ? data.currentFrequency : null
     );
     await this.safeSetCapabilityValue(
       "measure_temperature",
@@ -228,6 +239,30 @@ class OmnikLocal extends Inverter {
         await this.safeSetCapabilityValue("meter_power", data.totalProduction);
       }
     }
+  }
+
+  /**
+   * Fire production_started / production_stopped triggers on the 0 ↔ >0
+   * transition of measure_power. Only fires from the second poll onwards
+   * (need a previous value to compare against), and ignores non-finite
+   * readings — those would create spurious transitions.
+   */
+  private fireProductionTransitionTriggers(currentPower: number): void {
+    if (!Number.isFinite(currentPower)) return;
+    const previous = this.previousPower;
+    this.previousPower = currentPower;
+    if (previous === undefined || !Number.isFinite(previous)) return;
+
+    const wasProducing = previous > 0;
+    const isProducing = currentPower > 0;
+    if (wasProducing === isProducing) return;
+
+    const cardId = isProducing ? "production_started" : "production_stopped";
+    const tokens = isProducing ? { power: currentPower } : {};
+    this.driver
+      .homey.flow.getDeviceTriggerCard(cardId)
+      .trigger(this, tokens)
+      .catch((err) => this.error(`Failed to fire ${cardId}`, err));
   }
 
   private async safeSetCapabilityValue(capability: string, value: unknown): Promise<void> {

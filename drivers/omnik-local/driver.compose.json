@@ -39,6 +39,7 @@
     "meter_power",
     "meter_power.daily",
     "measure_voltage",
+    "measure_frequency",
     "measure_temperature"
   ],
   "capabilitiesOptions": {
