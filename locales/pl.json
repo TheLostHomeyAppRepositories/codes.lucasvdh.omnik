@@ -14,7 +14,7 @@
       "auth_password": "Hasło",
       "auth_submit": "Kontynuuj",
       "manual_title": "Wprowadź numer seryjny ręcznie",
-      "manual_explainer": "Nie udało się automatycznie wykryć numeru seryjnego inwertera. Wprowadź numer seryjny modułu WiFi ręcznie. Jest wydrukowany na naklejce na samym module WiFi (10 cyfr, zwykle zaczynający się od 160, 161, 604 lub 646).",
+      "manual_explainer": "Nie udało się automatycznie wykryć numeru seryjnego inwertera. Znajdź naklejkę z 10-cyfrowym numerem — na zewnętrznym module WiFi lub na samym inwerterze, jeśli ma wbudowany moduł WiFi. Zwykle zaczyna się od 160, 161, 604 lub 646.",
       "manual_sn_label": "Numer seryjny modułu WiFi",
       "manual_submit": "Spróbuj ponownie",
       "confirm_title": "Znaleziono inwerter",

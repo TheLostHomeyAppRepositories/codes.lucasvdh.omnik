@@ -15,15 +15,15 @@ This repo continues where [DiedB's Homey-SolarPanels](https://github.com/DiedB/H
 
 ## Hardware support
 
-The app speaks the legacy `0x68`-framed binary protocol on TCP port **8899** that Omnik's WiFi-stick exposes locally.
+The app speaks the legacy `0x68`-framed binary protocol on TCP port **8899** that Omnik's WiFi module exposes locally (an external WiFi stick on most models, built into the inverter on TL2 and some others).
 
-**Confirmed working** (WiFi-stick serial number prefixes): `160`, `161`, `604`, `646`.
+**Confirmed working** (WiFi-module serial number prefixes): `160`, `161`, `604`, `646`.
 
 **Likely to work** (same protocol family, not exhaustively tested): `602`–`606`, `611`/`617` (Hosola-branded), `504` (iGEN). The pairing flow accepts *any* numeric serial number; you get a non-blocking warning if your prefix isn't in the verified list.
 
 **Won't work**:
 
-- WiFi-sticks starting with `601` - those are cloud-only and don't respond to direct TCP
+- WiFi modules starting with `601` - those are cloud-only and don't respond to direct TCP
 - Newer ethernet/Solarman v5 logger sticks - different protocol (Modbus RTU embedded in v5 frames) which this app does not yet implement
 - Models that only expose data over HTTP (e.g. Omniksol 2500TL - HTML-only, 2000TL2 - JSON-only) - an HTTP fallback is on the roadmap
 
@@ -31,10 +31,10 @@ If pairing fails on your inverter, please open an issue with your model name and
 
 ## Pairing
 
-1. Find the **WiFi stick's IP address** in your router's DHCP table or in the inverter's WiFi configuration page
-2. Find the **WiFi stick's serial number** - it's printed on a sticker on the WiFi stick itself (10 digits, usually starting with `160`/`161`/`604`/`646`). It is *not* the inverter's product serial number printed on the side of the inverter
-3. In Homey, add a new device → Omnik → enter the IP and the WiFi stick's S/N
-4. The default polling interval is 5 minutes; you can lower it in the device's advanced settings
+1. Find the **WiFi module's IP address** in your router's DHCP table or in the inverter's WiFi configuration page
+2. (Auto-detected during pairing, but if needed manually:) find the **WiFi-module serial number** on a sticker. On most models it's on the external WiFi stick; on TL2-series and other models with a built-in WiFi module the sticker is on the inverter itself. Usually 10 digits starting with `160`/`161`/`604`/`646`.
+3. In Homey, add a new device → Omnik → enter the IP. The S/N is read from the inverter automatically; only fill it in manually if auto-detect can't reach `/js/status.js`.
+4. The default polling interval is 5 minutes; you can lower it in the device's advanced settings.
 
 ## Development
 
