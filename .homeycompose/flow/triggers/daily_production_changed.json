@@ -1,0 +1,32 @@
+{
+  "title": {
+    "en": "Today's production changed",
+    "nl": "Productie van vandaag is veranderd",
+    "de": "Heutige Produktion hat sich geändert",
+    "fr": "La production d'aujourd'hui a changé",
+    "it": "La produzione di oggi è cambiata",
+    "sv": "Dagens produktion har ändrats",
+    "no": "Dagens produksjon har endret seg",
+    "es": "La producción de hoy cambió",
+    "da": "Dagens produktion er ændret",
+    "pl": "Produkcja dzienna uległa zmianie"
+  },
+  "tokens": [
+    {
+      "name": "daily_production",
+      "type": "number",
+      "title": {
+        "en": "Today (kWh)",
+        "nl": "Vandaag (kWh)"
+      },
+      "example": 4.2
+    }
+  ],
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=omnik-local"
+    }
+  ]
+}

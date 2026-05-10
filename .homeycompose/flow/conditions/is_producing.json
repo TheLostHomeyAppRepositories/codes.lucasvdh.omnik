@@ -1,0 +1,21 @@
+{
+  "title": {
+    "en": "!{{Is|Is not}} producing power",
+    "nl": "!{{Wekt|Wekt geen}} stroom op",
+    "de": "Erzeugt !{{|kein}} Strom",
+    "fr": "!{{Produit|Ne produit pas}} de courant",
+    "it": "!{{Sta|Non sta}} producendo energia",
+    "sv": "!{{Producerar|Producerar inte}} ström",
+    "no": "!{{Produserer|Produserer ikke}} strøm",
+    "es": "!{{Está|No está}} produciendo energía",
+    "da": "!{{Producerer|Producerer ikke}} strøm",
+    "pl": "!{{Produkuje|Nie produkuje}} prądu"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=omnik-local"
+    }
+  ]
+}

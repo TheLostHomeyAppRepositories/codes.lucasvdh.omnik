@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "codes.lucasvdh.omnik",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#0c1845",
@@ -66,6 +66,161 @@
   "source": "https://github.com/lucasvdh/codes.lucasvdh.omnik",
   "homepage": "https://homey-omnik.gitbook.io/en/",
   "support": "https://homey-omnik.gitbook.io/en/faq",
+  "flow": {
+    "triggers": [
+      {
+        "title": {
+          "en": "Today's production changed",
+          "nl": "Productie van vandaag is veranderd",
+          "de": "Heutige Produktion hat sich geändert",
+          "fr": "La production d'aujourd'hui a changé",
+          "it": "La produzione di oggi è cambiata",
+          "sv": "Dagens produktion har ändrats",
+          "no": "Dagens produksjon har endret seg",
+          "es": "La producción de hoy cambió",
+          "da": "Dagens produktion er ændret",
+          "pl": "Produkcja dzienna uległa zmianie"
+        },
+        "tokens": [
+          {
+            "name": "daily_production",
+            "type": "number",
+            "title": {
+              "en": "Today (kWh)",
+              "nl": "Vandaag (kWh)"
+            },
+            "example": 4.2
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=omnik-local"
+          }
+        ],
+        "id": "daily_production_changed"
+      }
+    ],
+    "conditions": [
+      {
+        "title": {
+          "en": "Today's production !{{is|is not}} above",
+          "nl": "Productie van vandaag !{{is|is niet}} hoger dan",
+          "de": "Heutige Produktion !{{ist|ist nicht}} höher als",
+          "fr": "La production d'aujourd'hui !{{est|n'est pas}} supérieure à",
+          "it": "La produzione di oggi !{{è|non è}} superiore a",
+          "sv": "Dagens produktion !{{är|är inte}} över",
+          "no": "Dagens produksjon !{{er|er ikke}} over",
+          "es": "La producción de hoy !{{es|no es}} mayor que",
+          "da": "Dagens produktion !{{er|er ikke}} over",
+          "pl": "Produkcja dzienna !{{jest|nie jest}} powyżej"
+        },
+        "titleFormatted": {
+          "en": "Today's production !{{is|is not}} above [[kwh]] kWh",
+          "nl": "Productie van vandaag !{{is|is niet}} hoger dan [[kwh]] kWh",
+          "de": "Heutige Produktion !{{ist|ist nicht}} höher als [[kwh]] kWh",
+          "fr": "La production d'aujourd'hui !{{est|n'est pas}} supérieure à [[kwh]] kWh",
+          "it": "La produzione di oggi !{{è|non è}} superiore a [[kwh]] kWh",
+          "sv": "Dagens produktion !{{är|är inte}} över [[kwh]] kWh",
+          "no": "Dagens produksjon !{{er|er ikke}} over [[kwh]] kWh",
+          "es": "La producción de hoy !{{es|no es}} mayor que [[kwh]] kWh",
+          "da": "Dagens produktion !{{er|er ikke}} over [[kwh]] kWh",
+          "pl": "Produkcja dzienna !{{jest|nie jest}} powyżej [[kwh]] kWh"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=omnik-local"
+          },
+          {
+            "type": "number",
+            "name": "kwh",
+            "min": 0,
+            "max": 1000,
+            "step": 0.1,
+            "label": "kWh",
+            "labelDecimals": 1,
+            "placeholder": {
+              "en": "kWh",
+              "nl": "kWh"
+            }
+          }
+        ],
+        "id": "daily_production_above"
+      },
+      {
+        "title": {
+          "en": "!{{Is|Is not}} producing power",
+          "nl": "!{{Wekt|Wekt geen}} stroom op",
+          "de": "Erzeugt !{{|kein}} Strom",
+          "fr": "!{{Produit|Ne produit pas}} de courant",
+          "it": "!{{Sta|Non sta}} producendo energia",
+          "sv": "!{{Producerar|Producerar inte}} ström",
+          "no": "!{{Produserer|Produserer ikke}} strøm",
+          "es": "!{{Está|No está}} produciendo energía",
+          "da": "!{{Producerer|Producerer ikke}} strøm",
+          "pl": "!{{Produkuje|Nie produkuje}} prądu"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=omnik-local"
+          }
+        ],
+        "id": "is_producing"
+      },
+      {
+        "title": {
+          "en": "Power !{{is|is not}} above",
+          "nl": "Vermogen !{{is|is niet}} hoger dan",
+          "de": "Leistung !{{ist|ist nicht}} höher als",
+          "fr": "La puissance !{{est|n'est pas}} supérieure à",
+          "it": "La potenza !{{è|non è}} superiore a",
+          "sv": "Effekten !{{är|är inte}} över",
+          "no": "Effekten !{{er|er ikke}} over",
+          "es": "La potencia !{{es|no es}} mayor que",
+          "da": "Effekten !{{er|er ikke}} over",
+          "pl": "Moc !{{jest|nie jest}} powyżej"
+        },
+        "titleFormatted": {
+          "en": "Power !{{is|is not}} above [[watts]] W",
+          "nl": "Vermogen !{{is|is niet}} hoger dan [[watts]] W",
+          "de": "Leistung !{{ist|ist nicht}} höher als [[watts]] W",
+          "fr": "La puissance !{{est|n'est pas}} supérieure à [[watts]] W",
+          "it": "La potenza !{{è|non è}} superiore a [[watts]] W",
+          "sv": "Effekten !{{är|är inte}} över [[watts]] W",
+          "no": "Effekten !{{er|er ikke}} over [[watts]] W",
+          "es": "La potencia !{{es|no es}} mayor que [[watts]] W",
+          "da": "Effekten !{{er|er ikke}} over [[watts]] W",
+          "pl": "Moc !{{jest|nie jest}} powyżej [[watts]] W"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=omnik-local"
+          },
+          {
+            "type": "number",
+            "name": "watts",
+            "min": 0,
+            "max": 20000,
+            "step": 1,
+            "label": "W",
+            "labelDecimals": 0,
+            "placeholder": {
+              "en": "Watts",
+              "nl": "Watt"
+            }
+          }
+        ],
+        "id": "power_above"
+      }
+    ]
+  },
   "drivers": [
     {
       "name": {
@@ -97,9 +252,43 @@
       "capabilities": [
         "measure_power",
         "meter_power",
+        "meter_power.daily",
         "measure_voltage",
         "measure_temperature"
       ],
+      "capabilitiesOptions": {
+        "meter_power": {
+          "title": {
+            "en": "Total energy",
+            "nl": "Totale energie",
+            "de": "Gesamtenergie",
+            "fr": "Énergie totale",
+            "it": "Energia totale",
+            "sv": "Total energi",
+            "no": "Total energi",
+            "es": "Energía total",
+            "da": "Total energi",
+            "pl": "Energia całkowita"
+          }
+        },
+        "meter_power.daily": {
+          "title": {
+            "en": "Today",
+            "nl": "Vandaag",
+            "de": "Heute",
+            "fr": "Aujourd'hui",
+            "it": "Oggi",
+            "sv": "Idag",
+            "no": "I dag",
+            "es": "Hoy",
+            "da": "I dag",
+            "pl": "Dziś"
+          }
+        }
+      },
+      "energy": {
+        "meterPowerExportedCapability": "meter_power"
+      },
       "id": "omnik-local",
       "settings": [
         {

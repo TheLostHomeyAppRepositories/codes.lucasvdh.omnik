@@ -1,0 +1,46 @@
+{
+  "title": {
+    "en": "Today's production !{{is|is not}} above",
+    "nl": "Productie van vandaag !{{is|is niet}} hoger dan",
+    "de": "Heutige Produktion !{{ist|ist nicht}} höher als",
+    "fr": "La production d'aujourd'hui !{{est|n'est pas}} supérieure à",
+    "it": "La produzione di oggi !{{è|non è}} superiore a",
+    "sv": "Dagens produktion !{{är|är inte}} över",
+    "no": "Dagens produksjon !{{er|er ikke}} over",
+    "es": "La producción de hoy !{{es|no es}} mayor que",
+    "da": "Dagens produktion !{{er|er ikke}} over",
+    "pl": "Produkcja dzienna !{{jest|nie jest}} powyżej"
+  },
+  "titleFormatted": {
+    "en": "Today's production !{{is|is not}} above [[kwh]] kWh",
+    "nl": "Productie van vandaag !{{is|is niet}} hoger dan [[kwh]] kWh",
+    "de": "Heutige Produktion !{{ist|ist nicht}} höher als [[kwh]] kWh",
+    "fr": "La production d'aujourd'hui !{{est|n'est pas}} supérieure à [[kwh]] kWh",
+    "it": "La produzione di oggi !{{è|non è}} superiore a [[kwh]] kWh",
+    "sv": "Dagens produktion !{{är|är inte}} över [[kwh]] kWh",
+    "no": "Dagens produksjon !{{er|er ikke}} over [[kwh]] kWh",
+    "es": "La producción de hoy !{{es|no es}} mayor que [[kwh]] kWh",
+    "da": "Dagens produktion !{{er|er ikke}} over [[kwh]] kWh",
+    "pl": "Produkcja dzienna !{{jest|nie jest}} powyżej [[kwh]] kWh"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=omnik-local"
+    },
+    {
+      "type": "number",
+      "name": "kwh",
+      "min": 0,
+      "max": 1000,
+      "step": 0.1,
+      "label": "kWh",
+      "labelDecimals": 1,
+      "placeholder": {
+        "en": "kWh",
+        "nl": "kWh"
+      }
+    }
+  ]
+}

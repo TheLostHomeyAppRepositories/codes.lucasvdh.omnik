@@ -1,41 +1,42 @@
 import { Device } from "homey";
 
-export class Inverter extends Device {
+export abstract class Inverter extends Device {
   /** The refresh interval in minutes */
-  interval?: number;
-  currentInterval?: NodeJS.Timeout;
+  protected interval?: number;
+  private currentInterval?: NodeJS.Timeout;
 
-  private setInterval(interval: number) {
+  private setIntervalMinutes(intervalMinutes: number) {
     this.currentInterval = this.homey.setInterval(
       this.checkProduction.bind(this),
-      interval * 60000
+      intervalMinutes * 60_000
     );
   }
 
-  resetInterval(newInterval: number) {
-    this.homey.clearInterval(this.currentInterval);
-    this.setInterval(newInterval);
+  protected resetInterval(newIntervalMinutes: number) {
+    if (this.currentInterval) {
+      this.homey.clearInterval(this.currentInterval);
+    }
+    this.setIntervalMinutes(newIntervalMinutes);
   }
 
   async onInit(): Promise<void> {
+    this.interval = this.getSetting("interval");
+
     if (!this.interval) {
       throw new Error("Expected interval to be set");
     }
 
-    this.setInterval(this.interval);
-
-    // SDK v3 migration, remove cron listeners
-    this.removeAllListeners();
+    this.setIntervalMinutes(this.interval);
 
     // Force immediate production check
     this.checkProduction();
   }
 
-  checkProduction() {
-    throw new Error("Expected override");
-  }
+  abstract checkProduction(): Promise<void> | void;
 
-  onDeleted () {
-    this.homey.clearInterval(this.currentInterval);
+  onDeleted() {
+    if (this.currentInterval) {
+      this.homey.clearInterval(this.currentInterval);
+    }
   }
 }

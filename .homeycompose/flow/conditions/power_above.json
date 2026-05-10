@@ -1,0 +1,46 @@
+{
+  "title": {
+    "en": "Power !{{is|is not}} above",
+    "nl": "Vermogen !{{is|is niet}} hoger dan",
+    "de": "Leistung !{{ist|ist nicht}} höher als",
+    "fr": "La puissance !{{est|n'est pas}} supérieure à",
+    "it": "La potenza !{{è|non è}} superiore a",
+    "sv": "Effekten !{{är|är inte}} över",
+    "no": "Effekten !{{er|er ikke}} over",
+    "es": "La potencia !{{es|no es}} mayor que",
+    "da": "Effekten !{{er|er ikke}} over",
+    "pl": "Moc !{{jest|nie jest}} powyżej"
+  },
+  "titleFormatted": {
+    "en": "Power !{{is|is not}} above [[watts]] W",
+    "nl": "Vermogen !{{is|is niet}} hoger dan [[watts]] W",
+    "de": "Leistung !{{ist|ist nicht}} höher als [[watts]] W",
+    "fr": "La puissance !{{est|n'est pas}} supérieure à [[watts]] W",
+    "it": "La potenza !{{è|non è}} superiore a [[watts]] W",
+    "sv": "Effekten !{{är|är inte}} över [[watts]] W",
+    "no": "Effekten !{{er|er ikke}} over [[watts]] W",
+    "es": "La potencia !{{es|no es}} mayor que [[watts]] W",
+    "da": "Effekten !{{er|er ikke}} over [[watts]] W",
+    "pl": "Moc !{{jest|nie jest}} powyżej [[watts]] W"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=omnik-local"
+    },
+    {
+      "type": "number",
+      "name": "watts",
+      "min": 0,
+      "max": 20000,
+      "step": 1,
+      "label": "W",
+      "labelDecimals": 0,
+      "placeholder": {
+        "en": "Watts",
+        "nl": "Watt"
+      }
+    }
+  ]
+}

@@ -22,5 +22,17 @@
     "es": "Nuevas imágenes de la aplicación e icono del controlador",
     "da": "Nye app-billeder og driverikon",
     "pl": "Nowe obrazy aplikacji i ikona sterownika"
+  },
+  "1.2.0": {
+    "en": "Stability fixes, new flow cards, and lifetime kWh tracking.",
+    "nl": "Stabiliteitsfixes, nieuwe flow-kaarten en cumulatieve kWh-meting.",
+    "de": "Stabilitäts-Fixes, neue Flow-Karten und kumulative kWh-Messung.",
+    "fr": "Corrections de stabilité, nouvelles cartes de flux et suivi cumulé des kWh.",
+    "it": "Correzioni di stabilità, nuove flow card e conteggio cumulativo dei kWh.",
+    "sv": "Stabilitetsfixar, nya flow-kort och kumulativ kWh-mätning.",
+    "no": "Stabilitetsfiks, nye flytkort og kumulativ kWh-måling.",
+    "es": "Correcciones de estabilidad, nuevas tarjetas de flujo y medición acumulada de kWh.",
+    "da": "Stabilitetsrettelser, nye flow-kort og kumulativ kWh-måling.",
+    "pl": "Poprawki stabilności, nowe karty flow i kumulatywny pomiar kWh."
   }
 }

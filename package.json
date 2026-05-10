@@ -1,24 +1,20 @@
 {
   "name": "codes.lucasvdh.omnik",
-  "version": "1.1.0",
-  "main": "app.ts",
+  "version": "1.2.0",
+  "main": "app.js",
   "engines": {
-    "node": "18"
+    "node": "22"
   },
   "scripts": {
     "homey-validate": "homey app validate --level verified",
     "homey-build": "homey app build",
     "build": "tsc"
   },
-  "dependencies": {
-    "node-fetch": "^2.6.6"
-  },
   "devDependencies": {
-    "@tsconfig/node18": "^1.0.1",
-    "@types/homey": "npm:homey-apps-sdk-v3-types@^0.3.4",
-    "@types/node": "^18.14",
-    "@types/node-fetch": "2",
-    "homey": "^2.30.7",
-    "typescript": "^5.1.3"
+    "@tsconfig/node22": "^22.0.0",
+    "@types/homey": "npm:homey-apps-sdk-v3-types@^0.3.12",
+    "@types/node": "^22.10.0",
+    "homey": "^4.2.1",
+    "typescript": "^5.9.0"
   }
 }

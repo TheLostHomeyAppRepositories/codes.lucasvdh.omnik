@@ -1,18 +1,21 @@
 {
+  "error": {
+    "generic": "Coś poszło nie tak. Spróbuj ponownie."
+  },
   "pair": {
     "omnik-local": {
       "title": "Inwerter Omnik",
       "subtitle": "Wprowadź adres IP i numer WiFi S/N swojego inwertera Omnik.",
       "ip_address": "Adres IP",
       "wifi_sn": "Numer WiFi S/N",
-      "unverified_sn_message": "Uwaga: Ta aplikacja może nie działać z twoim falownikiem Omnik.\n\nTa aplikacja została zweryfikowana tylko dla urządzeń o numerze seryjnym rozpoczynającym się od 160, 161 i 604.",
+      "unverified_sn_message": "Nieznany prefiks numeru seryjnego. Ta aplikacja została potwierdzona jako działająca dla numerów seryjnych zaczynających się od 160, 161, 604 lub 646. Inne modele mogą działać — spróbujemy mimo to.",
       "add_device": "Dodawanie urządzenia",
       "error": {
         "missing_ip_address": "Podaj adres IP",
         "missing_wifi_sn": "Podaj numer WiFi S/N",
         "host_unreachable": "Nie można połączyć się z inwerterem Omnik pod tym adresem IP. Upewnij się, że adres IP jest poprawny i inwerter jest włączony.",
         "connection_timed_out": "Podczas próby połączenia z inwerterem Omnik wystąpił limit czasu. Upewnij się, że numer WiFi S/N jest poprawny.",
-        "unexpected_response": "Otrzymano nieoczekiwana odpowiedź od inwertera Omnik.",
+        "unexpected_response": "Otrzymano nieoczekiwana odpowiedź od inwertera Omnik. Aplikacja jest potwierdzona jako działająca dla numerów seryjnych zaczynających się od 160, 161, 604 lub 646; podziel się swoim modelem na GitHub, jeśli jest inny.",
         "adding_device": "Coś poszło nie tak podczas dodawania urządzenia.\n\nMoże to oznaczać, że inwerter został już dodany jako urządzenie."
       }
     },

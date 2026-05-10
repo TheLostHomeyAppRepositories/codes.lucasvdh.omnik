@@ -1,18 +1,21 @@
 {
+  "error": {
+    "generic": "Etwas ist schiefgelaufen. Bitte erneut versuchen."
+  },
   "pair": {
     "omnik-local": {
       "title": "Omnik-Wechselrichter",
       "subtitle": "Geben Sie die IP-Adresse und die WiFi-Seriennummer Ihres Omnik-Wechselrichters ein.",
       "ip_address": "IP-Adresse",
       "wifi_sn": "WiFi-Seriennummer",
-      "unverified_sn_message": "Achtung: Diese App funktioniert möglicherweise nicht mit Ihrem Omnik-Wechselrichter.\n\nDiese App wurde nur für Geräte mit einer Seriennummer, die mit 160, 161 und 604 beginnt, validiert.",
+      "unverified_sn_message": "Unbekanntes Seriennummern-Präfix. Diese App wurde für Seriennummern, die mit 160, 161, 604 oder 646 beginnen, als funktionierend bestätigt. Andere Modelle können trotzdem funktionieren — wir versuchen es einfach.",
       "add_device": "Gerät wird hinzugefügt",
       "error": {
         "missing_ip_address": "Geben Sie eine IP-Adresse an",
         "missing_wifi_sn": "Geben Sie eine WiFi-Seriennummer an",
         "host_unreachable": "Konnte den Omnik-Wechselrichter unter dieser IP-Adresse nicht erreichen. Stellen Sie sicher, dass die IP-Adresse korrekt und der Wechselrichter eingeschaltet ist.",
         "connection_timed_out": "Es ist ein Timeout beim Verbinden mit Ihrem Omnik-Wechselrichter aufgetreten. Stellen Sie sicher, dass die WiFi-Seriennummer korrekt ist.",
-        "unexpected_response": "Es wurde eine unerwartete Antwort von Ihrem Omnik-Wechselrichter empfangen.",
+        "unexpected_response": "Eine unerwartete Antwort wurde von Ihrem Omnik-Wechselrichter empfangen. Die App wurde für Seriennummern bestätigt, die mit 160, 161, 604 oder 646 beginnen; teilen Sie Ihr Modell bitte auf GitHub, wenn es ein anderes ist.",
         "adding_device": "Beim Hinzufügen des Geräts ist ein Fehler aufgetreten.\n\nEs könnte sein, dass der Wechselrichter bereits als Gerät hinzugefügt wurde."
       }
     },

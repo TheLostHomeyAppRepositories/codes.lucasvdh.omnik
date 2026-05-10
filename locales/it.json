@@ -1,18 +1,21 @@
 {
+  "error": {
+    "generic": "Qualcosa è andato storto. Riprova."
+  },
   "pair": {
     "omnik-local": {
       "title": "Inverter Omnik",
       "subtitle": "Inserisci l'indirizzo IP e il S/N WiFi dell'inverter Omnik.",
       "ip_address": "Indirizzo IP",
       "wifi_sn": "S/N WiFi",
-      "unverified_sn_message": "Attenzione: Questa app potrebbe non funzionare con il tuo inverter Omnik.\n\nQuesta app è stata validata solo per dispositivi con un numero di serie che inizia con 160, 161 e 604.",
+      "unverified_sn_message": "Prefisso del numero di serie sconosciuto. Questa app è stata confermata funzionante per numeri di serie che iniziano con 160, 161, 604 o 646. Altri modelli potrebbero funzionare — proveremo comunque.",
       "add_device": "Aggiungi dispositivo",
       "error": {
         "missing_ip_address": "Fornisci un indirizzo IP",
         "missing_wifi_sn": "Fornisci un S/N WiFi",
         "host_unreachable": "Impossibile raggiungere l'inverter Omnik all'indirizzo IP indicato. Assicurati che l'indirizzo IP sia corretto e l'inverter sia acceso.",
         "connection_timed_out": "Timeout durante la connessione al tuo inverter Omnik. Assicurati che il S/N WiFi sia corretto.",
-        "unexpected_response": "Risposta inattesa dal tuo inverter Omnik.",
+        "unexpected_response": "Risposta inattesa dal tuo inverter Omnik. L'app è confermata funzionante per numeri di serie che iniziano con 160, 161, 604 o 646; condividi il tuo modello su GitHub se è diverso.",
         "adding_device": "Qualcosa è andato storto durante l'aggiunta del dispositivo.\n\nPotrebbe essere che l'inverter sia già stato aggiunto come dispositivo."
       }
     },

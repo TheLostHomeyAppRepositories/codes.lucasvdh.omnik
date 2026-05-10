@@ -22,8 +22,9 @@
                        id="wifi_sn"
                        oninput="wifiSnChanged(this.value)"
                        type="text"
-                       pattern="[0-9]{10}"
-                       placeholder="000000000"
+                       inputmode="numeric"
+                       pattern="[0-9]+"
+                       placeholder="1600000000"
                        value=""/>
             </div>
             <p id="wifi_sn_hint" class="alert hint hidden"></p>
@@ -65,18 +66,19 @@
         const hintElement = document.getElementById("wifi_sn_hint");
 
         if (value !== undefined && value.length >= 3 && !isVerifiedSn(value)) {
-            hintElement.classList.remove('hidden')
-            document.getElementById("wifi_sn_hint").innerText = Homey.__("pair.omnik-local.unverified_sn_message")
+            hintElement.classList.remove('hidden');
+            hintElement.innerText = Homey.__("pair.omnik-local.unverified_sn_message");
         } else {
-            hintElement.classList.add('hidden')
-            document.getElementById("wifi_sn_hint").innerText = ''
+            hintElement.classList.add('hidden');
+            hintElement.innerText = '';
         }
     }
 
+    // Prefixes that have been confirmed to work via this app's binary protocol.
+    // Update with newly reported prefixes from the community as they're verified.
     function isVerifiedSn(value) {
-        let verifiedSerialNumbers = ['160', '161', '604'];
-
-        return verifiedSerialNumbers.find((verifiedValue) => value.startsWith(verifiedValue)) !== undefined
+        const verifiedSerialNumbers = ['160', '161', '604', '646'];
+        return verifiedSerialNumbers.find((verifiedValue) => value.startsWith(verifiedValue)) !== undefined;
     }
 </script>
 

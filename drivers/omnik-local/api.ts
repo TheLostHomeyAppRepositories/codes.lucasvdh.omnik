@@ -1,10 +1,14 @@
-import { InverterData } from "./types";
-
-const net = require("net");
+import net from "net";
 
 export class TimeoutError extends Error {
   constructor() {
     super("The connection timed out");
+  }
+}
+
+export class HostUnreachableError extends Error {
+  constructor(cause: string) {
+    super(`Could not reach inverter: ${cause}`);
   }
 }
 
@@ -14,88 +18,184 @@ export class UnexpectedResponseError extends Error {
   }
 }
 
+export class ParseError extends Error {
+  constructor(cause: string) {
+    super("Failed to parse inverter data: " + cause);
+  }
+}
+
+export interface InverterData {
+  inverterName: string;
+  currentPower: number;
+  currentVoltage: number;
+  dailyProduction: number;
+  totalProduction: number;
+  currentTemperature: number;
+}
+
+export class OmnikProtocol {
+  /**
+   * Build the binary request frame the Omnik WiFi logger expects on TCP/8899.
+   *
+   * Frame layout (20 bytes):
+   *   [0..3]   magic header   0x68 0x02 0x40 0x30
+   *   [4..7]   serial bytes   logger S/N as little-endian hex
+   *   [8..11]  serial bytes   same S/N repeated
+   *   [12..13] command        0x01 0x00
+   *   [14]     checksum       (115 + sum of bytes 4..11) low byte
+   *   [15]     terminator     0x16
+   */
+  static buildRequest(serialNumber: number): Buffer {
+    const buffer = Buffer.alloc(16);
+    buffer[0] = 0x68;
+    buffer[1] = 0x02;
+    buffer[2] = 0x40;
+    buffer[3] = 0x30;
+
+    const doubleHex = serialNumber.toString(16).padStart(8, "0").repeat(2);
+    for (let i = 0; i < 8; i++) {
+      const byte = parseInt(doubleHex.substring((7 - i) * 2, (7 - i) * 2 + 2), 16);
+      buffer[4 + i] = byte;
+    }
+
+    buffer[12] = 0x01;
+    buffer[13] = 0x00;
+
+    let checksum = 115;
+    for (let i = 4; i < 12; i++) checksum += buffer[i];
+    buffer[14] = checksum & 0xff;
+    buffer[15] = 0x16;
+
+    return buffer;
+  }
+
+  /**
+   * Parse a response frame from the Omnik WiFi logger.
+   *
+   * Offsets follow the open-source InverterMsg format used by Woutrrr/Omnik-Data-Logger:
+   *   15..30  ASCII inverter name (16 bytes)
+   *   31      inverter temperature (Int16BE, /10 °C)
+   *   51..56  AC voltages L1/L2/L3 (Int16BE, /10 V) — averaged across positive phases
+   *   59..68  AC powers L1/L2/L3 (Int16BE, W) — summed (positive phases only)
+   *   69      E-Today (UInt16BE, /100 kWh)
+   *   71      E-Total (UInt32BE, /10 kWh, lifetime cumulative)
+   */
+  static parseResponse(data: Buffer): InverterData {
+    if (data.length < 75) {
+      throw new ParseError(`response too short (${data.length} bytes)`);
+    }
+
+    const inverterName = data.subarray(15, 31).toString().replace(/\0+$/, "").trim();
+
+    const phasePowers = [59, 63, 67]
+      .map((offset) => data.readInt16BE(offset))
+      .filter((v) => v > 0);
+    const phaseVoltages = [51, 53, 55]
+      .map((offset) => data.readInt16BE(offset))
+      .filter((v) => v > 0);
+
+    const currentPower = phasePowers.reduce((sum, v) => sum + v, 0);
+    const currentVoltage = phaseVoltages.length
+      ? phaseVoltages.reduce((sum, v) => sum + v, 0) / phaseVoltages.length / 10
+      : 0;
+
+    // Sensors that are unset/unsupported send 0xFFFF (UInt16) or 0xFFFFFFFF (UInt32).
+    // Clamp those to NaN so the device layer can ignore them instead of writing
+    // 655.35 kWh or 429496729.5 kWh into the meter.
+    const rawDaily = data.readUInt16BE(69);
+    const rawTotal = data.readUInt32BE(71);
+    const rawTemp = data.readInt16BE(31);
+    const dailyProduction = rawDaily === 0xffff ? NaN : rawDaily / 100;
+    const totalProduction = rawTotal === 0xffffffff ? NaN : rawTotal / 10;
+    const currentTemperature = rawTemp === -1 ? NaN : rawTemp / 10;
+
+    return {
+      inverterName,
+      currentPower,
+      currentVoltage,
+      dailyProduction,
+      totalProduction,
+      currentTemperature,
+    };
+  }
+}
+
 export class OmnikLocalApi {
   private readonly address: string;
   private readonly wifiSn: number;
+  private readonly port: number;
+  private readonly timeoutMs: number;
 
-  constructor({ address, wifiSn }: { address: string, wifiSn: number }) {
+  constructor({
+    address,
+    wifiSn,
+    port = 8899,
+    timeoutMs = 10000,
+  }: {
+    address: string;
+    wifiSn: number;
+    port?: number;
+    timeoutMs?: number;
+  }) {
     this.address = address;
     this.wifiSn = wifiSn;
+    this.port = port;
+    this.timeoutMs = timeoutMs;
   }
 
   getData(): Promise<InverterData> {
     return new Promise((resolve, reject) => {
       const client = new net.Socket();
-      client.connect(8899, this.address);
-      client.setTimeout(10000);
+      let settled = false;
+
+      const settle = (fn: () => void) => {
+        if (settled) return;
+        settled = true;
+        client.destroy();
+        fn();
+      };
+
+      client.setTimeout(this.timeoutMs);
 
       client.on("data", (data: Buffer) => {
-        if (Buffer.byteLength(data) > 70) {
-          const inverterName = data.subarray(15, 31).toString();
-          const powerArray = [
-            data.readInt16BE(59),
-            data.readInt16BE(63),
-            data.readInt16BE(67)
-          ].filter((v) => v > 0);
-
-          const currentPower =
-            powerArray.reduce((p1, p2) => p1 + p2, 0) /
-            powerArray.length;
-          const dailyProduction = data.readUInt16BE(69) / 100;
-          const voltageArray = [
-            data.readInt16BE(51),
-            data.readInt16BE(53),
-            data.readInt16BE(55)
-          ].filter((v) => v > 0);
-          const currentVoltage =
-            voltageArray.reduce((v1, v2) => v1 + v2, 0) /
-            voltageArray.length /
-            10;
-          const currentTemperature = data.readInt16BE(31) / 10;
-
-          client.destroy();
-
-          const typedResponse: InverterData = {
-            inverterName,
-            currentPower,
-            currentVoltage,
-            dailyProduction,
-            currentTemperature
-          };
-
-          resolve(typedResponse);
-        } else {
-          reject(new UnexpectedResponseError(data.toString("hex")));
+        try {
+          if (data.length <= 70) {
+            settle(() => reject(new UnexpectedResponseError(data.toString("hex"))));
+            return;
+          }
+          const inverterData = OmnikProtocol.parseResponse(data);
+          settle(() => resolve(inverterData));
+        } catch (error) {
+          settle(() =>
+            reject(
+              error instanceof ParseError
+                ? error
+                : new ParseError(error instanceof Error ? error.message : String(error))
+            )
+          );
         }
       });
 
-      client.on("timeout", () => {
-        client.destroy();
-        reject(new TimeoutError());
-      });
+      client.on("timeout", () => settle(() => reject(new TimeoutError())));
 
-      client.on("error", (error: any) => {
-        client.destroy();
-        reject(error);
+      client.on("error", (error: NodeJS.ErrnoException) => {
+        const code = error.code ?? "";
+        if (code === "ECONNREFUSED" || code === "EHOSTUNREACH" || code === "ENETUNREACH") {
+          settle(() => reject(new HostUnreachableError(code)));
+        } else {
+          settle(() => reject(error));
+        }
       });
 
       client.on("ready", () => {
-        const requestBuffer = Buffer.alloc(20);
-        requestBuffer.writeUIntBE(0x68024030, 0, 4);
-
-        requestBuffer.writeUIntLE(this.wifiSn, 4, 4);
-        requestBuffer.writeUIntLE(this.wifiSn, 8, 4);
-
-        const checksum =
-          115 +
-          requestBuffer.subarray(4, 12).reduce((a, b) => a + b, 0);
-
-        requestBuffer.writeUIntLE(0x01, 12, 2);
-        requestBuffer.writeUIntLE(checksum, 14, 2);
-        requestBuffer.writeUIntLE(0x16, 15, 1);
-
-        client.write(requestBuffer);
+        try {
+          client.write(OmnikProtocol.buildRequest(this.wifiSn));
+        } catch (error) {
+          settle(() => reject(error));
+        }
       });
+
+      client.connect(this.port, this.address);
     });
   }
 }
