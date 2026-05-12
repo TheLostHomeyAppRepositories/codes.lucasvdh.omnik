@@ -70,5 +70,17 @@
     "es": "Nueva herramienta de diagnóstico: sondee inversores emparejados o cualquier IP desde la configuración de la aplicación para depurar problemas de emparejamiento.",
     "da": "Nyt diagnoseværktøj: undersøg parrede invertere eller en vilkårlig IP fra app-indstillingerne for at fejlfinde parringsproblemer.",
     "pl": "Nowe narzędzie diagnostyczne: zbadaj sparowane inwertery lub dowolny adres IP z ustawień aplikacji, aby pomóc w debugowaniu problemów z parowaniem."
+  },
+  "1.5.1": {
+    "en": "Pairing fix for newer omnik5000tl2 WiFi firmware (H4.01.51MW) that exposes status data via myDeviceArray instead of webData.",
+    "nl": "Koppelfix voor nieuwere omnik5000tl2 WiFi-firmware (H4.01.51MW) die statusdata via myDeviceArray aanbiedt in plaats van webData.",
+    "de": "Kopplungsfix für neuere omnik5000tl2-WiFi-Firmware (H4.01.51MW), die Statusdaten über myDeviceArray statt webData bereitstellt.",
+    "fr": "Correctif d'appairage pour le firmware WiFi omnik5000tl2 plus récent (H4.01.51MW) qui expose les données via myDeviceArray au lieu de webData.",
+    "it": "Correzione di accoppiamento per il firmware WiFi omnik5000tl2 più recente (H4.01.51MW) che espone i dati di stato tramite myDeviceArray invece di webData.",
+    "sv": "Parkopplingsfix för nyare omnik5000tl2 WiFi-firmware (H4.01.51MW) som exponerar statusdata via myDeviceArray istället för webData.",
+    "no": "Sammenkoblingsfiks for nyere omnik5000tl2 WiFi-fastvare (H4.01.51MW) som eksponerer statusdata via myDeviceArray i stedet for webData.",
+    "es": "Corrección de emparejamiento para el firmware WiFi más reciente de omnik5000tl2 (H4.01.51MW) que expone los datos de estado a través de myDeviceArray en lugar de webData.",
+    "da": "Parringsfiks for nyere omnik5000tl2 WiFi-firmware (H4.01.51MW) der eksponerer statusdata via myDeviceArray i stedet for webData.",
+    "pl": "Poprawka parowania dla nowszego oprogramowania WiFi omnik5000tl2 (H4.01.51MW), które udostępnia dane statusu przez myDeviceArray zamiast webData."
   }
 }

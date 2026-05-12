@@ -99,10 +99,21 @@ function parseStatusJs(body) {
     version: matchVar(body, "version"),
     wlanMac: matchVar(body, "wlanMac"),
   };
-  const webDataMatch = body.match(/webData\s*=\s*"([^"]*)"/);
-  const webData = webDataMatch ? webDataMatch[1].split(",").map((f) => f.trim()) : [];
+  // Original firmware exposes a `webData` variable; newer firmware (issue #1,
+  // omnik5000tl2 with WiFi firmware H4.01.51MW) uses `myDeviceArray[0]="..."`.
+  // Same field layout — try both.
+  const match =
+    body.match(/webData\s*=\s*"([^"]*)"/) ??
+    body.match(/myDeviceArray\s*\[\s*0\s*\]\s*=\s*"([^"]*)"/);
+  const webData = match ? match[1].split(",").map((f) => f.trim()) : [];
+  const fieldSource = body.match(/webData\s*=\s*"/)
+    ? "webData"
+    : body.match(/myDeviceArray\s*\[\s*0\s*\]/)
+      ? "myDeviceArray[0]"
+      : "none";
   return {
     meta,
+    fieldSource,
     webData,
     inverterName: webData[0] ?? "",
     masterFirmware: webData[1] ?? "",
@@ -289,6 +300,7 @@ function renderReport(ip, sn, snSource, probes) {
     lines.push(`- m2mMid (WiFi S/N): ${p.meta.m2mMid || "-"}`);
     lines.push(`- WLAN MAC: ${p.meta.wlanMac || "-"}`);
     lines.push(`- Firmware version: ${p.meta.version || "-"}`);
+    lines.push(`- Device-fields source: ${p.fieldSource}`);
     lines.push(`- Current power: ${p.currentPower ?? "-"} W`);
     lines.push(`- Today: ${p.dailyKwh ?? "-"} kWh`);
     lines.push(`- Total: ${p.totalKwh ?? "-"} kWh`);

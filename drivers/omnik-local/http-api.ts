@@ -74,7 +74,7 @@ export class OmnikHttpApi {
 
   async getData(): Promise<InverterData> {
     const { webData } = await this.fetchStatusJs();
-    return this.parseInverterData(webData);
+    return OmnikHttpApi.parseInverterData(webData);
   }
 
   async discover(): Promise<DiscoveryInfo> {
@@ -88,7 +88,7 @@ export class OmnikHttpApi {
       wifiStickSn: meta.m2mMid,
       masterFirmware: webData[1] ?? "",
       slaveFirmware: webData[2] ?? "",
-      data: this.parseInverterData(webData),
+      data: OmnikHttpApi.parseInverterData(webData),
     };
   }
 
@@ -104,7 +104,7 @@ export class OmnikHttpApi {
     };
   }
 
-  private parseInverterData(webData: string[]): InverterData {
+  static parseInverterData(webData: string[]): InverterData {
     if (webData.length < 8) {
       throw new ParseError(`webData has ${webData.length} fields, expected ≥8`);
     }
@@ -130,9 +130,15 @@ export class OmnikHttpApi {
   }
 
   private extractWebData(body: string): string[] {
-    const match = body.match(/webData\s*=\s*"([^"]*)"/);
+    // The original Omnik firmware exposes a single comma-separated `webData`
+    // variable. Newer firmware (e.g. omnik5000tl2 with WiFi firmware
+    // H4.01.51MW, reported in issue #1) only exposes `myDeviceArray[0]="..."`
+    // with the same field layout. Try both.
+    const match =
+      body.match(/webData\s*=\s*"([^"]*)"/) ??
+      body.match(/myDeviceArray\s*\[\s*0\s*\]\s*=\s*"([^"]*)"/);
     if (!match) {
-      throw new ParseError("status.js does not contain webData");
+      throw new ParseError("status.js does not contain webData or myDeviceArray[0]");
     }
     return match[1].split(",").map((f) => f.trim());
   }
