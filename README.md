@@ -27,7 +27,7 @@ The app speaks the legacy `0x68`-framed binary protocol on TCP port **8899** tha
 - Newer ethernet/Solarman v5 logger sticks - different protocol (Modbus RTU embedded in v5 frames) which this app does not yet implement
 - Models that only expose data over HTTP (e.g. Omniksol 2500TL - HTML-only, 2000TL2 - JSON-only) - an HTTP fallback is on the roadmap
 
-If pairing fails on your inverter, please open an issue with your model name and serial number prefix so we can extend support.
+If pairing fails on your inverter, please open an issue with your model name and serial number prefix - and attach a **diagnostic report** so we can see exactly what your inverter responded with. See [DIAGNOSE.md](./DIAGNOSE.md) for how to generate one (from the Homey app settings or with the standalone `scripts/diagnose.mjs` script - no Homey needed).
 
 ## Pairing
 

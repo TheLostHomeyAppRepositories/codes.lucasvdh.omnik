@@ -58,5 +58,17 @@
     "es": "Nuevos disparadores de flujo para cuando la producción inicia o se detiene, más monitoreo de frecuencia de red.",
     "da": "Nye flow-udløsere for når produktion starter eller stopper, plus overvågning af netfrekvens.",
     "pl": "Nowe wyzwalacze flow dla rozpoczęcia i zatrzymania produkcji, plus monitorowanie częstotliwości sieci."
+  },
+  "1.5.0": {
+    "en": "New diagnostic report tool: probe paired inverters or any IP from the app settings to help debug pairing issues.",
+    "nl": "Nieuw diagnoserapport: probe gekoppelde inverters of een willekeurig IP vanuit de app-instellingen om koppelproblemen te debuggen.",
+    "de": "Neues Diagnosetool: gekoppelte Wechselrichter oder eine beliebige IP aus den App-Einstellungen prüfen, um Kopplungsprobleme zu debuggen.",
+    "fr": "Nouvel outil de diagnostic : sondez les onduleurs appairés ou n'importe quelle IP depuis les paramètres de l'application pour aider à déboguer les problèmes d'appairage.",
+    "it": "Nuovo strumento diagnostico: esegui il probe degli inverter accoppiati o di un qualsiasi IP dalle impostazioni dell'app per aiutare a risolvere i problemi di accoppiamento.",
+    "sv": "Nytt diagnosverktyg: sondera parkopplade växelriktare eller valfri IP från app-inställningarna för att felsöka parkopplingsproblem.",
+    "no": "Nytt diagnoseverktøy: sjekk sammenkoblede vekselrettere eller en valgfri IP fra appinnstillingene for å feilsøke sammenkoblingsproblemer.",
+    "es": "Nueva herramienta de diagnóstico: sondee inversores emparejados o cualquier IP desde la configuración de la aplicación para depurar problemas de emparejamiento.",
+    "da": "Nyt diagnoseværktøj: undersøg parrede invertere eller en vilkårlig IP fra app-indstillingerne for at fejlfinde parringsproblemer.",
+    "pl": "Nowe narzędzie diagnostyczne: zbadaj sparowane inwertery lub dowolny adres IP z ustawień aplikacji, aby pomóc w debugowaniu problemów z parowaniem."
   }
 }

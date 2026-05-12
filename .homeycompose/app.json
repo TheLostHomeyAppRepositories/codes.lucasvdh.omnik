@@ -1,6 +1,6 @@
 {
   "id": "codes.lucasvdh.omnik",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "compatibility": ">=12.2.0",
   "sdk": 3,
   "brandColor": "#eda328",
@@ -65,5 +65,22 @@
   "source": "https://github.com/lucasvdh/codes.lucasvdh.omnik",
   "homepage": "https://homey-omnik.gitbook.io/en/",
   "support": "https://homey-omnik.gitbook.io/en/faq",
-  "homeyCommunityTopicId": 94499
+  "homeyCommunityTopicId": 94499,
+  "api": {
+    "listDevices": {
+      "method": "get",
+      "path": "/devices",
+      "public": false
+    },
+    "generateReport": {
+      "method": "post",
+      "path": "/report",
+      "public": false
+    },
+    "probeByIp": {
+      "method": "post",
+      "path": "/probe-ip",
+      "public": false
+    }
+  }
 }

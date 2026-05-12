@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    body { padding: 1rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    h1 { font-size: 1.2rem; margin: 0 0 0.5rem 0; }
+    p.lead { color: #555; margin: 0 0 1rem 0; line-height: 1.4; font-size: 0.92rem; }
+    .tabs { display: flex; gap: 0.25rem; margin-bottom: 1rem; border-bottom: 1px solid #ddd; }
+    .tab { padding: 0.5rem 0.9rem; cursor: pointer; border: 1px solid transparent; border-bottom: none; border-radius: 4px 4px 0 0; font-size: 0.92rem; color: #555; background: transparent; }
+    .tab.active { background: white; border-color: #ddd; color: #eda328; margin-bottom: -1px; }
+    .pane { display: none; }
+    .pane.active { display: block; }
+    .row { display: flex; gap: 0.5rem; align-items: stretch; margin-bottom: 0.75rem; flex-wrap: wrap; }
+    select, input[type="text"] { flex: 1 1 200px; min-width: 0; max-width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.95rem; text-overflow: ellipsis; }
+    button { padding: 0.5rem 1rem; border-radius: 4px; border: 1px solid #eda328; background: #eda328; color: white; cursor: pointer; font-size: 0.95rem; }
+    button.secondary { background: white; color: #eda328; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    button:not(:disabled):hover { filter: brightness(1.05); }
+    textarea { width: 100%; height: 320px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.78rem; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .status { margin-top: 0.5rem; padding: 0.5rem; border-radius: 4px; font-size: 0.88rem; display: none; }
+    .status.show { display: block; }
+    .status.ok { background: #e6f4ea; color: #1e6c33; }
+    .status.err { background: #fce8e8; color: #9b2222; }
+    .footer { margin-top: 1rem; font-size: 0.82rem; color: #666; line-height: 1.5; }
+    .hint { color: #666; font-size: 0.82rem; margin: -0.25rem 0 0.75rem 0; }
+  </style>
+</head>
+<body>
+<h1>Diagnostic report</h1>
+<p class="lead">
+  Generates a snapshot of one Omnik inverter: settings, cached state, capability values and the result of probing both the binary TCP protocol on port 8899 and the HTTP <code>/js/status.js</code> fallback. The report stays on your device; nothing is auto-sent. Use it when reporting an issue.
+</p>
+
+<div class="tabs">
+  <button class="tab active" data-tab="paired">Paired device</button>
+  <button class="tab" data-tab="ip">By IP address</button>
+</div>
+
+<div class="pane active" id="pane-paired">
+  <div class="row">
+    <select id="device"></select>
+    <button id="generate">Generate report</button>
+  </div>
+  <p class="hint">Use this when the inverter is paired with Homey, even if it's currently marked unavailable.</p>
+</div>
+
+<div class="pane" id="pane-ip">
+  <div class="row">
+    <input id="ip" type="text" placeholder="e.g. 192.168.1.42" />
+    <button id="generate-ip">Probe IP</button>
+  </div>
+  <p class="hint">Use this when pairing fails so option A isn't available yet. HTTP <code>/js/status.js</code> is probed with no auth and with the <code>admin/admin</code> default; the binary protocol on TCP/8899 can only be probed once the WiFi-stick S/N is known.</p>
+</div>
+
+<textarea id="output" placeholder="The report will appear here after you click 'Generate report' / 'Probe IP'." readonly></textarea>
+<div class="row" style="margin-top: 0.5rem;">
+  <button id="copy" class="secondary" disabled>Copy to clipboard</button>
+</div>
+<div id="status" class="status"></div>
+
+<p class="footer">
+  Paste the copied report into a new <a href="https://github.com/lucasvdh/codes.lucasvdh.omnik/issues/new" target="_blank">GitHub issue</a>. The report contains your inverter's local IP, MAC address and serial number — these are only useful on your home network, not a security risk to share. The HTTP password is automatically redacted. If you'd rather strip the other identifiers before sharing, edit the text after pasting.
+</p>
+
+<script>
+  function onHomeyReady(Homey) {
+    const deviceSelect = document.getElementById('device');
+    const generateBtn = document.getElementById('generate');
+    const ipInput = document.getElementById('ip');
+    const generateIpBtn = document.getElementById('generate-ip');
+    const copyBtn = document.getElementById('copy');
+    const output = document.getElementById('output');
+    const status = document.getElementById('status');
+
+    function showStatus(kind, msg) {
+      status.className = 'status show ' + kind;
+      status.textContent = msg;
+    }
+    function clearStatus() {
+      status.className = 'status';
+      status.textContent = '';
+    }
+
+    document.querySelectorAll('.tab').forEach(function (t) {
+      t.addEventListener('click', function () {
+        document.querySelectorAll('.tab').forEach(function (x) { x.classList.remove('active'); });
+        document.querySelectorAll('.pane').forEach(function (x) { x.classList.remove('active'); });
+        t.classList.add('active');
+        document.getElementById('pane-' + t.dataset.tab).classList.add('active');
+        clearStatus();
+      });
+    });
+
+    Homey.api('GET', '/devices', null, function (err, devices) {
+      if (err) {
+        showStatus('err', 'Could not list devices: ' + (err.message || err));
+        generateBtn.disabled = true;
+        return;
+      }
+      if (!devices || devices.length === 0) {
+        deviceSelect.innerHTML = '<option disabled selected>No paired Omnik inverters found</option>';
+        generateBtn.disabled = true;
+        return;
+      }
+      devices.forEach(function (d) {
+        const opt = document.createElement('option');
+        opt.value = d.id;
+        opt.textContent = d.name;
+        opt.title = d.id;
+        deviceSelect.appendChild(opt);
+      });
+    });
+
+    function runReport(button, runningLabel, restoreLabel, call) {
+      clearStatus();
+      const originalLabel = button.textContent;
+      button.disabled = true;
+      button.textContent = runningLabel;
+      output.value = '';
+      copyBtn.disabled = true;
+      call(function (err, result) {
+        button.disabled = false;
+        button.textContent = restoreLabel || originalLabel;
+        if (err) {
+          showStatus('err', 'Report failed: ' + (err.message || err));
+          return;
+        }
+        output.value = (result && result.markdown) || '';
+        copyBtn.disabled = false;
+        showStatus('ok', 'Report ready. Copy it and paste into a new GitHub issue.');
+      });
+    }
+
+    generateBtn.addEventListener('click', function () {
+      const deviceId = deviceSelect.value;
+      if (!deviceId) {
+        showStatus('err', 'Pick a device first.');
+        return;
+      }
+      runReport(generateBtn, 'Running probes…', 'Generate report', function (cb) {
+        Homey.api('POST', '/report', { deviceId: deviceId }, cb);
+      });
+    });
+
+    generateIpBtn.addEventListener('click', function () {
+      const ip = (ipInput.value || '').trim();
+      if (!ip) {
+        showStatus('err', 'Enter an IP address first.');
+        return;
+      }
+      runReport(generateIpBtn, 'Probing…', 'Probe IP', function (cb) {
+        Homey.api('POST', '/probe-ip', { ip: ip }, cb);
+      });
+    });
+
+    copyBtn.addEventListener('click', function () {
+      clearStatus();
+      if (!output.value) return;
+      const finish = function (ok) {
+        if (ok) showStatus('ok', 'Copied to clipboard.');
+        else showStatus('err', 'Could not copy automatically - select the text manually and copy.');
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(output.value).then(function () { finish(true); }, function () { finish(false); });
+      } else {
+        output.select();
+        try { finish(document.execCommand('copy')); } catch (e) { finish(false); }
+      }
+    });
+
+    Homey.ready();
+  }
+</script>
+</body>
+</html>
